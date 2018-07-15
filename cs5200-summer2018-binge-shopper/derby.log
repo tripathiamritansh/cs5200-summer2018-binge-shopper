@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sun Jul 15 19:07:04 EDT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.1.0 - (1808820): instance a816c00e-0164-a032-8bc4-0000068680e8 
+on database directory memory:E:\Study\Summer-2018\CS5200-Database\cs5200-summer2018-binge-shopper\cs5200-summer2018-binge-shopper\testdb with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/C:/Users/vidit/.m2/repository/org/apache/derby/derby/10.14.1.0/derby-10.14.1.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_171-b11
+user.dir=E:\Study\Summer-2018\CS5200-Database\cs5200-summer2018-binge-shopper\cs5200-summer2018-binge-shopper
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
