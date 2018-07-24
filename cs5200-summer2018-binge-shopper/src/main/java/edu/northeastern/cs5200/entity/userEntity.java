@@ -22,6 +22,28 @@ public class userEntity {
     @Column(name = "userType")
     private String userType;
 
+    @Override
+    public String toString() {
+        return "userEntity{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", userType='" + userType + '\'' +
+                '}';
+    }
+
+    public userEntity(String firstName, String lastName, String username, String password, String email, String userType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.userType = userType;
+    }
+
     public int getId() {
         return id;
     }
