@@ -1,5 +1,8 @@
 package edu.northeastern.cs5200.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 public class phoneEntity {
@@ -11,6 +14,9 @@ public class phoneEntity {
     private String phone;
     @Column(name = "primary")
     private Boolean primary;
-    @Column(name = "userId")
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(optional = false, fetch=FetchType.EAGER)
+    @JoinColumn(foreignKey = @ForeignKey(name = "user_phone_association"))
     private int userId;
 }

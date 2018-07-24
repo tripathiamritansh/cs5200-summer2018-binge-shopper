@@ -1,5 +1,8 @@
 package edu.northeastern.cs5200.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 public class sellerReviewEntity {
@@ -11,8 +14,14 @@ public class sellerReviewEntity {
     private String review;
     @Column(name = "rating")
     private Float rating;
-    @Column(name = "sellerId")
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(optional = false, fetch=FetchType.EAGER)
+    @JoinColumn(foreignKey = @ForeignKey(name = "seller_seller_review_association"))
     private int sellerId;
-    @Column(name = "buyerId")
+
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(optional = false, fetch=FetchType.EAGER)
+    @JoinColumn(foreignKey = @ForeignKey(name = "buyer_seller_review_association"))
     private int buyerId;
 }
