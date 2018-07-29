@@ -26,8 +26,7 @@ public class inventoryEntity {
     @JoinColumn(foreignKey = @ForeignKey(name = "inventory_product_association"))
     private int productId;
 
-    public inventoryEntity(Date date, int sellerId, int productId) {
-        this.date = date;
+    public inventoryEntity(int sellerId, int productId) {
         this.sellerId = sellerId;
         this.productId = productId;
     }
