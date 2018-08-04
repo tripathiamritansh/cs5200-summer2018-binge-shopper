@@ -1,10 +1,12 @@
 package edu.northeastern.cs5200.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name="user")
-public class userEntity {
+@Table(name="users")
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -21,10 +23,13 @@ public class userEntity {
     private String email;
     @Column(name = "userType")
     private String userType;
+    @Column(name = "approved")
+    private boolean approved;
+    //, columnDefinition = "default False"
 
     @Override
     public String toString() {
-        return "userEntity{" +
+        return "UserEntity{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -32,16 +37,21 @@ public class userEntity {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", userType='" + userType + '\'' +
+                ", approved='" + approved + '\'' +
                 '}';
     }
 
-    public userEntity(String firstName, String lastName, String username, String password, String email, String userType) {
+    public UserEntity() {
+    }
+
+    public UserEntity(String firstName, String lastName, String username, String password, String email, String userType, boolean approved) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
         this.userType = userType;
+        this.approved = approved;
     }
 
     public int getId() {
@@ -98,5 +108,13 @@ public class userEntity {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 }

@@ -1,16 +1,16 @@
 package edu.northeastern.cs5200.repository;
 
 
-import edu.northeastern.cs5200.entity.addressEntity;
+import edu.northeastern.cs5200.entity.AddressEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface AddressRepository extends CrudRepository<addressEntity, Integer> {
+public interface AddressRepository extends CrudRepository<AddressEntity, Integer> {
 
-    List<addressEntity> findByUserId(int userId);
+    List<AddressEntity> findByUserId(int userId);
 
-    addressEntity findById(int addressId);
+    AddressEntity findById(int addressId);
 }

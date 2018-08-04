@@ -1,18 +1,18 @@
 package edu.northeastern.cs5200.repository;
 
-import edu.northeastern.cs5200.entity.sellerReviewEntity;
+import edu.northeastern.cs5200.entity.SellerReviewEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface SellerReviewRepository extends CrudRepository<sellerReviewEntity, Integer> {
+public interface SellerReviewRepository extends CrudRepository<SellerReviewEntity, Integer> {
 
-    List<sellerReviewEntity> findBySellerId(int sellerId);
+    List<SellerReviewEntity> findBySellerId(int sellerId);
 
-    List<sellerReviewEntity> findByBuyerId(int buyerId);
+    List<SellerReviewEntity> findByBuyerId(int buyerId);
 
-    sellerReviewEntity findBySellerIdAndBuyerId(int sellerId, int buyerId);
+    SellerReviewEntity findBySellerIdAndBuyerId(int sellerId, int buyerId);
 
 }

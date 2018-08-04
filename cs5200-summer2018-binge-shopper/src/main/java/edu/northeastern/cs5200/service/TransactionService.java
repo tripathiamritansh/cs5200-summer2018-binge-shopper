@@ -1,6 +1,9 @@
 package edu.northeastern.cs5200.service;
 
-import edu.northeastern.cs5200.entity.transactionEntity;
+import edu.northeastern.cs5200.entity.OrderEntity;
+import edu.northeastern.cs5200.entity.ProductEntity;
+import edu.northeastern.cs5200.entity.TransactionEntity;
+import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,31 +17,31 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public transactionEntity addTransaction(int productId, int sellerId, int orderId){
-        return transactionRepository.save(new transactionEntity(productId, sellerId, orderId));
+    public TransactionEntity addTransaction(ProductEntity product, UserEntity seller, OrderEntity order){
+        return transactionRepository.save(new TransactionEntity(product, seller, order));
     }
 
-    public Optional<transactionEntity> getTransactionById(int transactionId){
+    public Optional<TransactionEntity> getTransactionById(int transactionId){
         return transactionRepository.findById(transactionId);
     }
 
-    public List<transactionEntity> getTransactionByProduct(int productId){
+    public List<TransactionEntity> getTransactionByProduct(int productId){
         return transactionRepository.findByProductId(productId);
     }
 
-    public List<transactionEntity> getTransactionBySeller(int sellerId){
+    public List<TransactionEntity> getTransactionBySeller(int sellerId){
         return transactionRepository.findBySellerId(sellerId);
     }
 
-    public List<transactionEntity> getTransactionByOrder(int orderId) {
+    public List<TransactionEntity> getTransactionByOrder(int orderId) {
         return transactionRepository.findByOrderId(orderId);
     }
 
-    public transactionEntity getTransactionByProductAndSellerAndOrder(int orderId, int sellerId, int productId) {
+    public TransactionEntity getTransactionByProductAndSellerAndOrder(int orderId, int sellerId, int productId) {
         return transactionRepository.findByOrderIdAndSellerIdAndProductId(orderId, sellerId, productId);
     }
 
-    public transactionEntity updateTransaction(transactionEntity transaction){
+    public TransactionEntity updateTransaction(TransactionEntity transaction){
         return transactionRepository.save(transaction);
     }
 

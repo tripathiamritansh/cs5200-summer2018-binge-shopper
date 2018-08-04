@@ -5,7 +5,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-public class addressEntity {
+@Entity
+@Table(name = "address")
+public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -20,27 +22,20 @@ public class addressEntity {
     private String state;
     @Column(name = "zip")
     private int zip;
-    @Column(name = "primary")
-    private Boolean primary;
+    @Column(name = "primary_add")
+    private boolean primary;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "user_address_association"))
-    private int userId;
+    private UserEntity user;
 
-    public addressEntity(String street1, String street2, String city, String state, int zip, Boolean primary, int userId) {
-        this.street1 = street1;
-        this.street2 = street2;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.primary = primary;
-        this.userId = userId;
+    public AddressEntity() {
     }
 
     @Override
     public String toString() {
-        return "addressEntity{" +
+        return "AddressEntity{" +
                 "id=" + id +
                 ", street1='" + street1 + '\'' +
                 ", street2='" + street2 + '\'' +
@@ -48,7 +43,7 @@ public class addressEntity {
                 ", state='" + state + '\'' +
                 ", zip=" + zip +
                 ", primary=" + primary +
-                ", userId=" + userId +
+                ", user=" + user +
                 '}';
     }
 
@@ -100,19 +95,29 @@ public class addressEntity {
         this.zip = zip;
     }
 
-    public Boolean getPrimary() {
+    public boolean getPrimary() {
         return primary;
     }
 
-    public void setPrimary(Boolean primary) {
+    public void setPrimary(boolean primary) {
         this.primary = primary;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public AddressEntity(String street1, String street2, String city, String state, int zip, boolean primary, UserEntity user) {
+        this.street1 = street1;
+        this.street2 = street2;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.primary = primary;
+        this.user = user;
     }
 }

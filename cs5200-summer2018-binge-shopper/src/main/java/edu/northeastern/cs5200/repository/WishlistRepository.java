@@ -1,17 +1,17 @@
 package edu.northeastern.cs5200.repository;
 
-import edu.northeastern.cs5200.entity.wishlistEntity;
+import edu.northeastern.cs5200.entity.WishlistEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface WishlistRepository extends CrudRepository<wishlistEntity, Integer> {
+public interface WishlistRepository extends CrudRepository<WishlistEntity, Integer> {
 
-    List<wishlistEntity> findByUserId(int userId);
+    List<WishlistEntity> findByUserId(int userId);
 
-    List<wishlistEntity> findByProductId(int productId);
+    List<WishlistEntity> findByProductId(int productId);
 
-    wishlistEntity findByUserIdAndProductId(int userId, int productId);
+    WishlistEntity findByUserIdAndProductId(int userId, int productId);
 }

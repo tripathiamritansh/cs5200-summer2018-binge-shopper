@@ -7,7 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
-public class transactionEntity {
+@Entity
+@Table(name = "transaction")
+public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -19,33 +21,36 @@ public class transactionEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "product_transaction_association"))
-    private int productId;
+    private ProductEntity product;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "seller_transaction_association"))
-    private int sellerId;
+    private UserEntity seller;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "order_transaction_association"))
-    private int orderId;
+    private OrderEntity order;
 
     @Override
     public String toString() {
-        return "transactionEntity{" +
+        return "TransactionEntity{" +
                 "id=" + id +
                 ", date=" + date +
-                ", productId=" + productId +
-                ", sellerId=" + sellerId +
-                ", orderId=" + orderId +
+                ", productId=" + product +
+                ", sellerId=" + seller +
+                ", orderId=" + order +
                 '}';
     }
 
-    public transactionEntity(int productId, int sellerId, int orderId) {
-        this.productId = productId;
-        this.sellerId = sellerId;
-        this.orderId = orderId;
+    public TransactionEntity() {
+    }
+
+    public TransactionEntity(ProductEntity product, UserEntity seller, OrderEntity order) {
+        this.product = product;
+        this.seller = seller;
+        this.order = order;
     }
 
     public int getId() {
@@ -64,27 +69,27 @@ public class transactionEntity {
         this.date = date;
     }
 
-    public int getProductId() {
-        return productId;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProduct(ProductEntity productId) {
+        this.product = product;
     }
 
-    public int getSellerId() {
-        return sellerId;
+    public UserEntity getSeller() {
+        return seller;
     }
 
-    public void setSellerId(int sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(UserEntity seller) {
+        this.seller = seller;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public OrderEntity getOrder() {
+        return order;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setOrder(OrderEntity order) {
+        this.order = order;
     }
 }

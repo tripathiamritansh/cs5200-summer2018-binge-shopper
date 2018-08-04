@@ -7,7 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
-public class orderEntity {
+@Entity
+@Table(name = "orders")
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -17,21 +19,24 @@ public class orderEntity {
     private Date date;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(optional = false, fetch=FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "order_buyer_association"))
-    private int buyerId;
+    private UserEntity buyer;
+
+    public OrderEntity() {
+    }
 
     @Override
     public String toString() {
-        return "orderEntity{" +
+        return "OrderEntity{" +
                 "id=" + id +
                 ", date=" + date +
-                ", buyerId=" + buyerId +
+                ", buyer=" + buyer +
                 '}';
     }
 
-    public orderEntity(int buyerId) {
-        this.buyerId = buyerId;
+    public OrderEntity(UserEntity buyer) {
+        this.buyer = buyer;
     }
 
     public int getId() {
@@ -50,11 +55,11 @@ public class orderEntity {
         this.date = date;
     }
 
-    public int getBuyerId() {
-        return buyerId;
+    public UserEntity getBuyer() {
+        return buyer;
     }
 
-    public void setBuyerId(int buyerId) {
-        this.buyerId = buyerId;
+    public void setBuyer(UserEntity buyer) {
+        this.buyer = buyer;
     }
 }

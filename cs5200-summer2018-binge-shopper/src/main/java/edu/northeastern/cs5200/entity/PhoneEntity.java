@@ -5,35 +5,40 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-public class phoneEntity {
+@Entity
+@Table(name = "phone")
+public class PhoneEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "primary")
-    private Boolean primary;
+    @Column(name = "primary_phone")
+    private boolean primary;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(optional = false, fetch=FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "user_phone_association"))
-    private int userId;
+    private UserEntity user;
 
     @Override
     public String toString() {
-        return "phoneEntity{" +
+        return "PhoneEntity{" +
                 "id=" + id +
                 ", phone='" + phone + '\'' +
                 ", primary=" + primary +
-                ", userId=" + userId +
+                ", user=" + user +
                 '}';
     }
 
-    public phoneEntity(String phone, Boolean primary, int userId) {
+    public PhoneEntity() {
+    }
+
+    public PhoneEntity(String phone, boolean primary, UserEntity user) {
         this.phone = phone;
         this.primary = primary;
-        this.userId = userId;
+        this.user = user;
     }
 
     public int getId() {
@@ -52,19 +57,19 @@ public class phoneEntity {
         this.phone = phone;
     }
 
-    public Boolean getPrimary() {
+    public boolean getPrimary() {
         return primary;
     }
 
-    public void setPrimary(Boolean primary) {
+    public void setPrimary(boolean primary) {
         this.primary = primary;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

@@ -1,6 +1,6 @@
 package edu.northeastern.cs5200.service;
 
-import edu.northeastern.cs5200.entity.productReviewEntity;
+import edu.northeastern.cs5200.entity.ProductReviewEntity;
 import edu.northeastern.cs5200.repository.ProductReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,27 +14,27 @@ public class ProductReviewService {
     @Autowired
     private ProductReviewRepository productReviewRepository;
 
-    public productReviewEntity addProductReview(productReviewEntity productReview){
+    public ProductReviewEntity addProductReview(ProductReviewEntity productReview){
         return productReviewRepository.save(productReview);
     }
 
-    public Optional<productReviewEntity> getProductReviewById(int id){
+    public Optional<ProductReviewEntity> getProductReviewById(int id){
         return productReviewRepository.findById(id);
     }
 
-    public List<productReviewEntity> getProductReviewByProduct(int productId){
+    public List<ProductReviewEntity> getProductReviewByProduct(int productId){
         return productReviewRepository.findByProductId(productId);
     }
 
-    public List<productReviewEntity> getProductReviewByReviewer(int reviewerId){
+    public List<ProductReviewEntity> getProductReviewByReviewer(int reviewerId){
         return productReviewRepository.findByReviewerId(reviewerId);
     }
 
-    public productReviewEntity getProductReviewByProductAndReviewer(int productId, int reviewerId){
+    public ProductReviewEntity getProductReviewByProductAndReviewer(int productId, int reviewerId){
         return productReviewRepository.findByProductIdAndReviewerId(productId, reviewerId);
     }
 
-    public productReviewEntity updateProductReview(productReviewEntity productReview){
+    public ProductReviewEntity updateProductReview(ProductReviewEntity productReview){
         return productReviewRepository.save(productReview);
     }
 

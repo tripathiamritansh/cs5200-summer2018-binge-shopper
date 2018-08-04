@@ -7,7 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
-public class inventoryEntity {
+@Entity
+@Table(name = "inventory")
+public class InventoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -19,25 +21,28 @@ public class inventoryEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "inventory_seller_association"))
-    private int sellerId;
+    private UserEntity seller;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "inventory_product_association"))
-    private int productId;
+    private ProductEntity product;
 
-    public inventoryEntity(int sellerId, int productId) {
-        this.sellerId = sellerId;
-        this.productId = productId;
+    public InventoryEntity() {
+    }
+
+    public InventoryEntity(UserEntity seller, ProductEntity product) {
+        this.seller = seller;
+        this.product = product;
     }
 
     @Override
     public String toString() {
-        return "inventoryEntity{" +
+        return "InventoryEntity{" +
                 "id=" + id +
                 ", date=" + date +
-                ", sellerId=" + sellerId +
-                ", productId=" + productId +
+                ", seller=" + seller +
+                ", product=" + product +
                 '}';
     }
 
@@ -57,19 +62,19 @@ public class inventoryEntity {
         this.date = date;
     }
 
-    public int getSellerId() {
-        return sellerId;
+    public UserEntity getSeller() {
+        return seller;
     }
 
-    public void setSellerId(int sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(UserEntity seller) {
+        this.seller = seller;
     }
 
-    public int getProductId() {
-        return productId;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 }

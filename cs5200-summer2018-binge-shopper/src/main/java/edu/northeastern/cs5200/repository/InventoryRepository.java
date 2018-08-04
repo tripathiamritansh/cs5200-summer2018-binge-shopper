@@ -1,6 +1,6 @@
 package edu.northeastern.cs5200.repository;
 
-import edu.northeastern.cs5200.entity.inventoryEntity;
+import edu.northeastern.cs5200.entity.InventoryEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface InventoryRepository extends CrudRepository<inventoryEntity, Integer> {
+public interface InventoryRepository extends CrudRepository<InventoryEntity, Integer> {
 
-    List<inventoryEntity> findBySellerId(int userId);
+    List<InventoryEntity> findBySellerId(int userId);
 
-    inventoryEntity findBySellerIdAndProductId(int userId, int productId);
+    InventoryEntity findBySellerIdAndProductId(int userId, int productId);
 
-    @Query("select i from inventoryEntity i where product_id = ?1")
-    List<inventoryEntity> findByProductId(int productId);
+    @Query("select i from InventoryEntity i where product_id = ?1")
+    List<InventoryEntity> findByProductId(int productId);
 }

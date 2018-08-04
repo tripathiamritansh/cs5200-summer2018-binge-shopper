@@ -6,7 +6,9 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.util.Date;
 
-public class wishlistEntity {
+@Entity
+@Table(name="wishlist")
+public class WishlistEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -17,26 +19,29 @@ public class wishlistEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "user_wishlist_association"))
-    private int userId;
+    private UserEntity user;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "product_wishlist_association"))
-    private int productId;
+    private ProductEntity product;
 
     @Override
     public String toString() {
-        return "wishlistEntity{" +
+        return "WishlistEntity{" +
                 "id=" + id +
                 ", date=" + date +
-                ", userId=" + userId +
-                ", productId=" + productId +
+                ", user=" + user +
+                ", product=" + product +
                 '}';
     }
 
-    public wishlistEntity(int userId, int productId) {
-        this.userId = userId;
-        this.productId = productId;
+    public WishlistEntity() {
+    }
+
+    public WishlistEntity(UserEntity user, ProductEntity product) {
+        this.user = user;
+        this.product = product;
     }
 
     public int getId() {
@@ -55,19 +60,19 @@ public class wishlistEntity {
         this.date = date;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
-    public int getProductId() {
-        return productId;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 }

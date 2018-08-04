@@ -5,7 +5,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-public class productReviewEntity {
+@Entity
+@Table(name = "seller_review")
+public class SellerReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -17,30 +19,33 @@ public class productReviewEntity {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
-    @JoinColumn(foreignKey = @ForeignKey(name = "product_review_association"))
-    private int productId;
+    @JoinColumn(foreignKey = @ForeignKey(name = "seller_seller_review_association"))
+    private UserEntity seller;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
-    @JoinColumn(foreignKey = @ForeignKey(name = "reviewer_review_association"))
-    private int reviewerId;
+    @JoinColumn(foreignKey = @ForeignKey(name = "buyer_seller_review_association"))
+    private UserEntity buyer;
 
     @Override
     public String toString() {
-        return "productReviewEntity{" +
+        return "SellerReviewEntity{" +
                 "id=" + id +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
-                ", productId=" + productId +
-                ", reviewerId=" + reviewerId +
+                ", seller=" + seller +
+                ", buyer=" + buyer +
                 '}';
     }
 
-    public productReviewEntity(String review, Float rating, int productId, int reviewerId) {
+    public SellerReviewEntity() {
+    }
+
+    public SellerReviewEntity(String review, Float rating, UserEntity seller, UserEntity buyer) {
         this.review = review;
         this.rating = rating;
-        this.productId = productId;
-        this.reviewerId = reviewerId;
+        this.seller = seller;
+        this.buyer = buyer;
     }
 
     public int getId() {
@@ -67,19 +72,19 @@ public class productReviewEntity {
         this.rating = rating;
     }
 
-    public int getProductId() {
-        return productId;
+    public UserEntity getSeller() {
+        return seller;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setSeller(UserEntity seller) {
+        this.seller = seller;
     }
 
-    public int getReviewerId() {
-        return reviewerId;
+    public UserEntity getBuyer() {
+        return buyer;
     }
 
-    public void setReviewerId(int reviewerId) {
-        this.reviewerId = reviewerId;
+    public void setBuyer(UserEntity buyer) {
+        this.buyer = buyer;
     }
 }

@@ -2,7 +2,9 @@ package edu.northeastern.cs5200.entity;
 
 import javax.persistence.*;
 
-public class productEntity {
+@Entity
+@Table(name = "product")
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -20,7 +22,7 @@ public class productEntity {
 
     @Override
     public String toString() {
-        return "productEntity{" +
+        return "ProductEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", category='" + category + '\'' +
@@ -30,7 +32,10 @@ public class productEntity {
                 '}';
     }
 
-    public productEntity(String name, String category, int price, String image_url, int qty) {
+    public ProductEntity() {
+    }
+
+    public ProductEntity(String name, String category, int price, String image_url, int qty) {
         this.name = name;
         this.category = category;
         this.price = price;

@@ -1,7 +1,7 @@
 package edu.northeastern.cs5200.service;
 
-import edu.northeastern.cs5200.entity.inventoryEntity;
-import edu.northeastern.cs5200.entity.orderEntity;
+import edu.northeastern.cs5200.entity.OrderEntity;
+import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,19 +15,19 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public orderEntity addOrder(int buyerId){
-        return orderRepository.save(new orderEntity(buyerId));
+    public OrderEntity addOrder(UserEntity buyer){
+        return orderRepository.save(new OrderEntity(buyer));
     }
 
-    public List<orderEntity> getOrderByBuyer(int buyerId){
+    public List<OrderEntity> getOrderByBuyer(int buyerId){
         return orderRepository.findByBuyerId(buyerId);
     }
 
-    public Optional<orderEntity> getOrderById(int orderId){
+    public Optional<OrderEntity> getOrderById(int orderId){
         return orderRepository.findById(orderId);
     }
 
-    public orderEntity updateOrder(orderEntity order){
+    public OrderEntity updateOrder(OrderEntity order){
         return orderRepository.save(order);
     }
 

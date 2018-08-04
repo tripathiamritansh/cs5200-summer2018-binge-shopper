@@ -1,13 +1,13 @@
 package edu.northeastern.cs5200.repository;
 
-import edu.northeastern.cs5200.entity.userEntity;
+import edu.northeastern.cs5200.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends CrudRepository<userEntity, Integer> {
+public interface UserRepository extends CrudRepository<UserEntity, Integer> {
 
-    userEntity findById(int id);
+    UserEntity findById(int id);
 
-    userEntity findByUsername(String username);
+    UserEntity findByUsername(String username);
 }

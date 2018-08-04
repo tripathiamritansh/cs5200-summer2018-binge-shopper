@@ -5,7 +5,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-public class sellerReviewEntity {
+@Entity
+@Table(name = "product_review")
+public class ProductReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -17,30 +19,33 @@ public class sellerReviewEntity {
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
-    @JoinColumn(foreignKey = @ForeignKey(name = "seller_seller_review_association"))
-    private int sellerId;
+    @JoinColumn(foreignKey = @ForeignKey(name = "product_review_association"))
+    private ProductEntity product;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
-    @JoinColumn(foreignKey = @ForeignKey(name = "buyer_seller_review_association"))
-    private int buyerId;
+    @JoinColumn(foreignKey = @ForeignKey(name = "reviewer_review_association"))
+    private UserEntity reviewer;
 
     @Override
     public String toString() {
-        return "sellerReviewEntity{" +
+        return "ProductReviewEntity{" +
                 "id=" + id +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
-                ", sellerId=" + sellerId +
-                ", buyerId=" + buyerId +
+                ", product=" + product +
+                ", reviewer=" + reviewer +
                 '}';
     }
 
-    public sellerReviewEntity(String review, Float rating, int sellerId, int buyerId) {
+    public ProductReviewEntity() {
+    }
+
+    public ProductReviewEntity(String review, Float rating, ProductEntity product, UserEntity reviewer) {
         this.review = review;
         this.rating = rating;
-        this.sellerId = sellerId;
-        this.buyerId = buyerId;
+        this.product = product;
+        this.reviewer = reviewer;
     }
 
     public int getId() {
@@ -67,19 +72,19 @@ public class sellerReviewEntity {
         this.rating = rating;
     }
 
-    public int getSellerId() {
-        return sellerId;
+    public ProductEntity getProduct() {
+        return product;
     }
 
-    public void setSellerId(int sellerId) {
-        this.sellerId = sellerId;
+    public void setProduct(ProductEntity product) {
+        this.product = product;
     }
 
-    public int getBuyerId() {
-        return buyerId;
+    public UserEntity getReviewer() {
+        return reviewer;
     }
 
-    public void setBuyerId(int buyerId) {
-        this.buyerId = buyerId;
+    public void setReviewer(UserEntity reviewer) {
+        this.reviewer = reviewer;
     }
 }
