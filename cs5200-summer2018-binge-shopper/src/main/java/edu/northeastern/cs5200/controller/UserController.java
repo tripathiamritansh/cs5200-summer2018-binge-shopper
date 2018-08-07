@@ -1,8 +1,6 @@
 package edu.northeastern.cs5200.controller;
 
 import edu.northeastern.cs5200.entity.UserEntity;
-import edu.northeastern.cs5200.service.AddressService;
-import edu.northeastern.cs5200.service.PhoneService;
 import edu.northeastern.cs5200.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AddressService addressService;
-
-    @Autowired
-    private PhoneService phoneService;
 
     @PostMapping("login")
     public UserEntity login(String username, String password, HttpSession session) throws Exception{

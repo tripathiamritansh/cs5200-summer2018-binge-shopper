@@ -29,7 +29,7 @@ public class AddressService {
         return addressRepository.save(address);
     }
 
-    void deleteAddress(AddressEntity address){
+    public void deleteAddress(AddressEntity address){
         addressRepository.delete(address);
     }
 }

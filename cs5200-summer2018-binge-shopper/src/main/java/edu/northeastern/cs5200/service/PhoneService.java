@@ -5,6 +5,7 @@ import edu.northeastern.cs5200.repository.PhoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,10 @@ public class PhoneService {
 
     public Optional<PhoneEntity> getPhoneById(int id){
         return phoneRepository.findById(id);
+    }
+
+    public List<PhoneEntity> getUserPhone(int userId){
+        return phoneRepository.findByUserId(userId);
     }
 
     public PhoneEntity updatePhone(PhoneEntity phone){
