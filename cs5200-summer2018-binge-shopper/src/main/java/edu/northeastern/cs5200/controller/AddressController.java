@@ -30,12 +30,12 @@ public class AddressController {
         return addressService.getUserAddress(userId);
     }
 
-    @PostMapping("user/update")
+    @PutMapping("user/update")
     public AddressEntity updateAddress(@RequestBody AddressEntity address, HttpSession session){
         return addressService.updateAddress(address);
     }
 
-    @PostMapping("user/{addressId}/delete")
+    @DeleteMapping("user/{addressId}/delete")
     public void deleteAddress(@PathVariable int addressId){
         AddressEntity address = addressService.getAddressById(addressId);
         addressService.deleteAddress(address);

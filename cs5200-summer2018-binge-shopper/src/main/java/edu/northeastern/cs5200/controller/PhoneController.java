@@ -30,12 +30,12 @@ public class PhoneController {
         return phoneService.getUserPhone(userId);
     }
 
-    @PostMapping("user/update")
+    @PutMapping("user/update")
     public PhoneEntity updatePhone(@RequestBody PhoneEntity phone, HttpSession session){
         return phoneService.updatePhone(phone);
     }
 
-    @PostMapping("user/{phoneId}/delete")
+    @DeleteMapping("user/{phoneId}/delete")
     public void deletePhone(@PathVariable int phoneId){
         phoneService.deletePhone(phoneId);
     }

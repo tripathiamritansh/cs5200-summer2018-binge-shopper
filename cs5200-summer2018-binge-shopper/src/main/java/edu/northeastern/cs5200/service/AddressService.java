@@ -26,7 +26,13 @@ public class AddressService {
     }
 
     public AddressEntity updateAddress(AddressEntity address){
-        return addressRepository.save(address);
+        AddressEntity a = addressRepository.findById(address.getId());
+        a.setStreet1(address.getStreet1());
+        a.setStreet2(address.getStreet2());
+        a.setCity(address.getCity());
+        a.setState(address.getState());
+        a.setZip(address.getZip());
+        return addressRepository.save(a);
     }
 
     public void deleteAddress(AddressEntity address){

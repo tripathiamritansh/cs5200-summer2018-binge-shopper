@@ -2,6 +2,7 @@ package edu.northeastern.cs5200.service;
 
 import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,13 @@ public class UserService {
     }
 
     public UserEntity updateUser(UserEntity user){
-        return userRepository.save(user);
+        UserEntity u = userRepository.findById(user.getId());
+        u.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        u.setFirstName(user.getFirstName());
+        u.setLastName(user.getLastName());
+        u.setEmail(user.getEmail());
+        u.setUserType(user.getUserType());
+        return userRepository.save(u);
     }
 
     public void deleteUser(int userId){

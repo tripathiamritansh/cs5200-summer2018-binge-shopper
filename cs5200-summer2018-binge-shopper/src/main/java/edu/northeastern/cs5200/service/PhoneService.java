@@ -5,6 +5,7 @@ import edu.northeastern.cs5200.repository.PhoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,9 @@ public class PhoneService {
     }
 
     public PhoneEntity updatePhone(PhoneEntity phone){
-        return phoneRepository.save(phone);
+        PhoneEntity p = phoneRepository.findById(phone.getId()).orElseThrow(()-> new EntityNotFoundException("No phone entity with this id"));
+        p.setPhone(phone.getPhone());
+        return phoneRepository.save(p);
     }
 
     public void deletePhone(int phoneId){
