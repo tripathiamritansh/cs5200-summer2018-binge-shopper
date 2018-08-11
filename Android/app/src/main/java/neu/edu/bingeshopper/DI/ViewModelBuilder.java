@@ -6,6 +6,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
 import neu.edu.bingeshopper.presentation.login.LoginViewModel;
+import neu.edu.bingeshopper.presentation.signup.SignUpViewModel;
 
 @Module
 public abstract class ViewModelBuilder {
@@ -14,6 +15,11 @@ public abstract class ViewModelBuilder {
     @Binds
     @IntoMap
     @ViewModelKey(LoginViewModel.class)
-    abstract ViewModel bindChallengeViewModel(LoginViewModel viewModel);
+    abstract ViewModel bindLoginViewModel(LoginViewModel viewModel);
 
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SignUpViewModel.class)
+    abstract ViewModel bindSignUpViewMode(SignUpViewModel viewModel);
 }
