@@ -77,8 +77,6 @@ public class UserRepository extends Repository {
                 } else {
                     callBack.onError(new UserRespositoryResponse(response.message()));
                 }
-
-
             }
 
             @Override

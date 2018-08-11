@@ -59,6 +59,7 @@ public class LoginViewModel extends ViewModel {
         public String getMessage() {
             return message;
         }
+
     }
 
     public enum Status {

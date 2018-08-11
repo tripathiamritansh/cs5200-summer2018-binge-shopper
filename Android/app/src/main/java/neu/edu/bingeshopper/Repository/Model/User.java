@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class User implements Parcelable {
     private int id;
 
-    public User(int id, String firstName, String lastName, String username, String password, String email, String userType, boolean approved) {
+    public User(int id, String firstName, String lastName, String username, String password, String email, UserType userType, boolean approved) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,7 +17,7 @@ public class User implements Parcelable {
         this.approved = approved;
     }
 
-    public User(String firstName, String lastName, String username, String password, String email, String userType) {
+    public User(String firstName, String lastName, String username, String password, String email, UserType userType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -26,7 +26,7 @@ public class User implements Parcelable {
         this.userType = userType;
     }
 
-    public User(String firstName, String lastName, String username, String password, String email, String userType, boolean approved) {
+    public User(String firstName, String lastName, String username, String password, String email, UserType userType, boolean approved) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -102,13 +102,13 @@ public class User implements Parcelable {
         this.email = email;
     }
 
-    private String userType;
+    private UserType userType;
 
-    public String getUserType() {
+    public UserType getUserType() {
         return this.userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
@@ -136,7 +136,7 @@ public class User implements Parcelable {
         dest.writeString(this.username);
         dest.writeString(this.password);
         dest.writeString(this.email);
-        dest.writeString(this.userType);
+        dest.writeInt(this.userType == null ? -1 : this.userType.ordinal());
         dest.writeByte(this.approved ? (byte) 1 : (byte) 0);
     }
 
@@ -147,7 +147,8 @@ public class User implements Parcelable {
         this.username = in.readString();
         this.password = in.readString();
         this.email = in.readString();
-        this.userType = in.readString();
+        int tmpUserType = in.readInt();
+        this.userType = tmpUserType == -1 ? null : UserType.values()[tmpUserType];
         this.approved = in.readByte() != 0;
     }
 
