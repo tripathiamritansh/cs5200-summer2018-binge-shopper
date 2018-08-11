@@ -28,7 +28,7 @@ public class UserController {
         if(user != null  && BCrypt.checkpw(password, user.getPassword())){
 
             if(user.getUserType().equals("Buyer") || user.getUserType().equals("Seller") && !user.getApproved()){
-                throw new AccessDeniedException("User requires admin approval to login!");
+                throw new AccessDeniedException(new Throwable("User requires admin approval to login!"));
             }
             session.setAttribute("user_session", user);
             session.setMaxInactiveInterval(300);
@@ -50,7 +50,7 @@ public class UserController {
         UserEntity user = userService.addUser(u);
 
         if((user.getUserType().equals("Buyer") || user.getUserType().equals("Seller")) && user.getApproved() == false){
-            throw new AccessDeniedException("User registered successfully| Needs to be approved by Admin!");
+            throw new AccessDeniedException(new Throwable("User registered successfully| Needs to be approved by Admin!"));
         }
 
         session.setAttribute("user_session", user);
