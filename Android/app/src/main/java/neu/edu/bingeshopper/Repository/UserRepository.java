@@ -29,7 +29,7 @@ public class UserRepository extends Repository {
     }
 
 
-    public class UserRespositoryResponse implements ResponseValue {
+    public class UserRepositoryResponse implements ResponseValue {
 
         @Nullable
         private User user;
@@ -39,15 +39,15 @@ public class UserRepository extends Repository {
 
         private Throwable t;
 
-        public UserRespositoryResponse(Throwable t) {
+        public UserRepositoryResponse(Throwable t) {
             this.t = t;
         }
 
-        public UserRespositoryResponse(@Nullable User user) {
+        public UserRepositoryResponse(@Nullable User user) {
             this.user = user;
         }
 
-        public UserRespositoryResponse(String message) {
+        public UserRepositoryResponse(String message) {
             this.message = message;
         }
 
@@ -73,18 +73,38 @@ public class UserRepository extends Repository {
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.isSuccessful()) {
                     userManager.saveUser(response.body());
-                    callBack.onSuccess(new UserRespositoryResponse(response.body()));
+                    callBack.onSuccess(new UserRepositoryResponse(response.body()));
                 } else {
-                    callBack.onError(new UserRespositoryResponse(response.message()));
+                    callBack.onError(new UserRepositoryResponse(response.message()));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                callBack.onError(new UserRespositoryResponse(t.getMessage()));
+                callBack.onError(new UserRepositoryResponse(t.getMessage()));
             }
         });
     }
 
+
+    public void signUp(User user, final RepositoryCallBack callBack) {
+        setCallBack(callBack);
+        userServices.register(user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    userManager.saveUser(response.body());
+                    callBack.onSuccess(new UserRepositoryResponse(response.body()));
+                } else {
+                    callBack.onError(new UserRepositoryResponse(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                callBack.onError(new UserRepositoryResponse(t.getMessage()));
+            }
+        });
+    }
 
 }

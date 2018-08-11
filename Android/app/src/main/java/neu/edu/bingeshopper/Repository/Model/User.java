@@ -44,6 +44,8 @@ public class User implements Parcelable {
         this.email = email;
     }
 
+
+
     public int getId() {
         return this.id;
     }

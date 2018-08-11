@@ -17,10 +17,12 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import neu.edu.bingeshopper.R;
+import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.common.UserManager;
 import neu.edu.bingeshopper.databinding.FragmentLoginBinding;
 import neu.edu.bingeshopper.presentation.MainActivity;
 import neu.edu.bingeshopper.presentation.ViewModelFactory;
+import neu.edu.bingeshopper.presentation.signup.SignUpFragment;
 
 public class LoginFragment extends DaggerFragment {
 
@@ -84,7 +86,12 @@ public class LoginFragment extends DaggerFragment {
             }
         });
 
-
+        binding.signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationUtil.navigate(SignUpFragment.newInstance(), getFragmentManager().beginTransaction(), R.id.content_frame);
+            }
+        });
     }
 
 

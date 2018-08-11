@@ -1,4 +1,4 @@
-package neu.edu.bingeshopper.presentation.login;
+package neu.edu.bingeshopper.presentation.signup;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -6,48 +6,48 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
-import neu.edu.bingeshopper.Repository.Model.Repository;
+import neu.edu.bingeshopper.Repository.Model.User;
 import neu.edu.bingeshopper.Repository.UserRepository;
 
-public class LoginViewModel extends ViewModel {
+public class SignUpViewModel extends ViewModel {
 
     private UserRepository repository;
-    private MutableLiveData<LoginViewModelResponse> responseMutableLiveData;
+    private MutableLiveData<SignUpViewModelResponse> responseMutableLiveData;
 
     @Inject
-    public LoginViewModel(UserRepository repository) {
+    public SignUpViewModel(UserRepository repository) {
         this.repository = repository;
     }
 
-    public MutableLiveData<LoginViewModelResponse> getResponseMutableLiveData() {
+    public MutableLiveData<SignUpViewModelResponse> getResponseMutableLiveData() {
+
         if (responseMutableLiveData == null) {
             responseMutableLiveData = new MutableLiveData<>();
         }
         return responseMutableLiveData;
+
     }
 
-    public void loginUser(String username, String password) {
-
-        repository.login(username, password, new Repository.RepositoryCallBack<UserRepository.UserRepositoryResponse>() {
+    public void signUpUser(User user) {
+        repository.signUp(user, new UserRepository.RepositoryCallBack<UserRepository.UserRepositoryResponse>() {
             @Override
             public void onSuccess(UserRepository.UserRepositoryResponse response) {
-                responseMutableLiveData.setValue(new LoginViewModelResponse(Status.Success, null));
+                responseMutableLiveData.setValue(new SignUpViewModelResponse(Status.Success, null));
             }
 
             @Override
             public void onError(UserRepository.UserRepositoryResponse response) {
-                responseMutableLiveData.setValue(new LoginViewModelResponse(Status.Error, response.getMessage()));
+                responseMutableLiveData.setValue(new SignUpViewModelResponse(Status.Error, response.getMessage()));
             }
         });
-
     }
 
-    public class LoginViewModelResponse {
+    class SignUpViewModelResponse {
 
         private Status status;
         private String message;
 
-        public LoginViewModelResponse(Status status, @Nullable String message) {
+        public SignUpViewModelResponse(Status status, @Nullable String message) {
             this.status = status;
             this.message = message;
         }
@@ -62,7 +62,7 @@ public class LoginViewModel extends ViewModel {
 
     }
 
-     enum Status {
+    enum Status {
         Success,
         Error
 
