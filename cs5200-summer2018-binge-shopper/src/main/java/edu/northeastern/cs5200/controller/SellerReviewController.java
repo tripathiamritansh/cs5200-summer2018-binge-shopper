@@ -6,7 +6,6 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -45,7 +44,7 @@ public class SellerReviewController {
 
     @PostMapping("delete/{sellerReviewId}")
     public void deleteSellerReview(@PathVariable int sellerReviewId){
-        SellerReviewEntity sellerReview = sellerReviewService.getSellerReviewById(sellerReviewId).orElseThrow(()-> new EntityNotFoundException("No seller review entity with this id"));;
+        SellerReviewEntity sellerReview = sellerReviewService.getSellerReviewById(sellerReviewId);
         sellerReviewService.deleteSellerReview(sellerReviewId);
     }
 }

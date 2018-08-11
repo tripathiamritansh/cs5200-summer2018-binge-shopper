@@ -15,10 +15,31 @@ import java.util.Optional;
 public class TransactionService {
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private TransactionRepository transactionRepository;
 
-    public TransactionEntity addTransaction(ProductEntity product, UserEntity seller, OrderEntity order){
-        return transactionRepository.save(new TransactionEntity(product, seller, order));
+    public TransactionEntity addTransaction(int productId, int sellerId, int orderId, TransactionEntity transaction) throws Exception {
+        OrderEntity order = orderService.getOrderById(orderId);
+        if(order == null)
+            throw new Exception("Order does not exist!");
+        UserEntity seller = userService.getUserById(sellerId);
+        if(seller == null)
+            throw new Exception("Seller does not exist!");
+        ProductEntity product = productService.getProductById(productId);
+        if(product == null)
+            throw new Exception("Product does not exist!");
+        transaction.setOrder(order);
+        transaction.setSeller(seller);
+        transaction.setProduct(product);
+        return transactionRepository.save(transaction);
     }
 
     public Optional<TransactionEntity> getTransactionById(int transactionId){
