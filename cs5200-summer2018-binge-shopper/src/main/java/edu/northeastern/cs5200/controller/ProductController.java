@@ -1,8 +1,8 @@
 package edu.northeastern.cs5200.controller;
 
 import edu.northeastern.cs5200.entity.ProductEntity;
+import edu.northeastern.cs5200.exception.NotFoundException;
 import edu.northeastern.cs5200.service.ProductService;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

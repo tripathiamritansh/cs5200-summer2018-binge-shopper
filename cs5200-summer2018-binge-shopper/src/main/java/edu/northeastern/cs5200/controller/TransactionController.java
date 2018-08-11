@@ -1,6 +1,7 @@
 package edu.northeastern.cs5200.controller;
 
 import edu.northeastern.cs5200.entity.TransactionEntity;
+import edu.northeastern.cs5200.exception.NotFoundException;
 import edu.northeastern.cs5200.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class TransactionController {
 
     @PostMapping("user/{userId}/add")
     public TransactionEntity addTransaction(@PathVariable int orderId, @PathVariable int sellerId,
-                                            @PathVariable int productId, @RequestBody TransactionEntity transaction) throws Exception{
+                                            @PathVariable int productId, @RequestBody TransactionEntity transaction) throws NotFoundException {
         return transactionService.addTransaction(productId, sellerId, orderId, transaction);
     }
 

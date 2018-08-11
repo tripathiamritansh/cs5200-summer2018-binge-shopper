@@ -1,6 +1,9 @@
 package edu.northeastern.cs5200.controller;
 
 import edu.northeastern.cs5200.entity.UserEntity;
+import edu.northeastern.cs5200.exception.AccessDeniedException;
+import edu.northeastern.cs5200.exception.AuthenticationException;
+import edu.northeastern.cs5200.exception.NotFoundException;
 import edu.northeastern.cs5200.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
-import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("api/user")
@@ -39,17 +40,17 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public UserEntity register(@RequestBody UserEntity u, HttpSession session) throws Exception{
+    public UserEntity register(@RequestBody UserEntity u, HttpSession session) throws NotFoundException {
 
         if(userService.findUserByUsername(u.getUsername()) != null){
-            throw new Exception("User already registered| Login directly!");
+            throw new AuthenticationException("User already registered| Login directly!");
         }
 
         u.setPassword(BCrypt.hashpw(u.getPassword(), BCrypt.gensalt()));
         UserEntity user = userService.addUser(u);
 
-        if(user.getUserType().equals("Buyer") || user.getUserType().equals("Seller")){
-            throw new Exception("User registered successfully| Needs to be approved by Admin!");
+        if((user.getUserType().equals("Buyer") || user.getUserType().equals("Seller")) && user.getApproved() == false){
+            throw new AccessDeniedException("User registered successfully| Needs to be approved by Admin!");
         }
 
         session.setAttribute("user_session", user);

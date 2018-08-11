@@ -4,6 +4,7 @@ import edu.northeastern.cs5200.entity.OrderEntity;
 import edu.northeastern.cs5200.entity.ProductEntity;
 import edu.northeastern.cs5200.entity.TransactionEntity;
 import edu.northeastern.cs5200.entity.UserEntity;
+import edu.northeastern.cs5200.exception.NotFoundException;
 import edu.northeastern.cs5200.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,16 +27,16 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public TransactionEntity addTransaction(int productId, int sellerId, int orderId, TransactionEntity transaction) throws Exception {
+    public TransactionEntity addTransaction(int productId, int sellerId, int orderId, TransactionEntity transaction) throws NotFoundException {
         OrderEntity order = orderService.getOrderById(orderId);
         if(order == null)
-            throw new Exception("Order does not exist!");
+            throw new NotFoundException("Order does not exist!");
         UserEntity seller = userService.getUserById(sellerId);
         if(seller == null)
-            throw new Exception("Seller does not exist!");
+            throw new NotFoundException("Seller does not exist!");
         ProductEntity product = productService.getProductById(productId);
         if(product == null)
-            throw new Exception("Product does not exist!");
+            throw new NotFoundException("Product does not exist!");
         transaction.setOrder(order);
         transaction.setSeller(seller);
         transaction.setProduct(product);
