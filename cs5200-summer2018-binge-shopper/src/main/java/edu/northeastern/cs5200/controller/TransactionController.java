@@ -1,15 +1,11 @@
 package edu.northeastern.cs5200.controller;
 
-import edu.northeastern.cs5200.entity.OrderEntity;
-import edu.northeastern.cs5200.entity.ProductEntity;
 import edu.northeastern.cs5200.entity.TransactionEntity;
-import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/transaction")
@@ -17,9 +13,6 @@ public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private ProductService productService;
 
     @PostMapping("user/{userId}/add")
     public TransactionEntity addTransaction(@PathVariable int orderId, @PathVariable int sellerId,
