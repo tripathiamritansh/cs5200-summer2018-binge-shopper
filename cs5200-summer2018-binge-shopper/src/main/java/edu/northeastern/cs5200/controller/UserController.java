@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpSession;
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("api/user")
@@ -18,21 +20,21 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("login")
-    public UserEntity login(String username, String password, HttpSession session) throws Exception{
+    public UserEntity login(String username, String password, HttpSession session) throws AccessDeniedException, AuthenticationException {
 
         UserEntity user = userService.findUserByUsername(username);
 
         if(user != null  && BCrypt.checkpw(password, user.getPassword())){
 
             if(user.getUserType().equals("Buyer") || user.getUserType().equals("Seller") && !user.getApproved()){
-                throw new Exception("User requires admin approval to login!");
+                throw new AccessDeniedException("User requires admin approval to login!");
             }
             session.setAttribute("user_session", user);
             session.setMaxInactiveInterval(300);
             return user;
         }
         else
-            throw new Exception("Invalid username and password| Try again !");
+            throw new AuthenticationException("Invalid username and password| Try again !");
 
     }
 
@@ -55,16 +57,12 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     public UserEntity update(@RequestBody UserEntity user, HttpSession session) throws Exception{
-
-        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        session.setAttribute("user_session", user);
-        session.setMaxInactiveInterval(300);
         return userService.updateUser(user);
     }
 
-    @PostMapping("logout")
+    @DeleteMapping("logout")
     public ResponseEntity logout(HttpSession session){
         session.invalidate();
         return new ResponseEntity("{}", HttpStatus.OK);

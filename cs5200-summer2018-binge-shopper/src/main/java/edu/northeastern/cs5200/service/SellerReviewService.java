@@ -33,8 +33,8 @@ public class SellerReviewService {
         return sellerReviewRepository.save(sellerReview);
     }
 
-    public Optional<SellerReviewEntity> getSellerReviewById(int id){
-        return sellerReviewRepository.findById(id);
+    public SellerReviewEntity getSellerReviewById(int id){
+        return sellerReviewRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("No seller review entity with this id"));
     }
 
     public List<SellerReviewEntity> getSellerReviewBySeller(int sellerId){
