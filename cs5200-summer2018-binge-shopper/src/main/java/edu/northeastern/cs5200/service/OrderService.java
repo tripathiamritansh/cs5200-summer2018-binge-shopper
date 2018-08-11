@@ -6,6 +6,7 @@ import edu.northeastern.cs5200.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,8 @@ public class OrderService {
         return orderRepository.findByBuyerId(buyerId);
     }
 
-    public Optional<OrderEntity> getOrderById(int orderId){
-        return orderRepository.findById(orderId);
+    public OrderEntity getOrderById(int orderId){
+        return orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("No order entity with this id"));
     }
 
     public OrderEntity updateOrder(OrderEntity order){
