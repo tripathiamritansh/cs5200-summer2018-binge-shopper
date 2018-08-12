@@ -13,8 +13,6 @@ public class WishlistEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-    @Column(name = "date", nullable = false, updatable = false)
-    private Date date;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
@@ -30,7 +28,6 @@ public class WishlistEntity {
     public String toString() {
         return "WishlistEntity{" +
                 "id=" + id +
-                ", date=" + date +
                 ", user=" + user +
                 ", product=" + product +
                 '}';
@@ -50,14 +47,6 @@ public class WishlistEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public UserEntity getUser() {

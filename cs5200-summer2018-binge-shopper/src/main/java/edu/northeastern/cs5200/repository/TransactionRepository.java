@@ -15,6 +15,8 @@ public interface TransactionRepository extends CrudRepository<TransactionEntity,
 
     List<TransactionEntity> findByOrderId(int orderId);
 
+    TransactionEntity findByOrderIdAndProductId(int orderId, int productId);
+
     TransactionEntity findByOrderIdAndSellerIdAndProductId(int orderId, int sellerId, int productId);
 
 }

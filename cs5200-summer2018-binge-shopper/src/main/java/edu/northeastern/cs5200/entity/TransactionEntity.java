@@ -18,6 +18,9 @@ public class TransactionEntity {
     @UpdateTimestamp
     private Date date;
 
+    @Column(name = "qty")
+    private int qty;
+
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "product_transaction_association"))
@@ -38,6 +41,7 @@ public class TransactionEntity {
         return "TransactionEntity{" +
                 "id=" + id +
                 ", date=" + date +
+                ", qty=" + qty +
                 ", productId=" + product +
                 ", sellerId=" + seller +
                 ", orderId=" + order +
@@ -47,10 +51,11 @@ public class TransactionEntity {
     public TransactionEntity() {
     }
 
-    public TransactionEntity(ProductEntity product, UserEntity seller, OrderEntity order) {
+    public TransactionEntity(ProductEntity product, UserEntity seller, OrderEntity order, int qty) {
         this.product = product;
         this.seller = seller;
         this.order = order;
+        this.qty = qty;
     }
 
     public int getId() {
@@ -67,6 +72,14 @@ public class TransactionEntity {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
     public ProductEntity getProduct() {

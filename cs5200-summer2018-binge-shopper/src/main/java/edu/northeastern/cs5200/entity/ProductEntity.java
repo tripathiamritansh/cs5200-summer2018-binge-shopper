@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "product")
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
     @Column(name = "name")
@@ -28,7 +27,8 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(String name, String category, int price, String image_url, int qty) {
+    public ProductEntity(int id, String name, String description, String image_url) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.image_url = image_url;

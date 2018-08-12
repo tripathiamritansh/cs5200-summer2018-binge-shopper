@@ -5,7 +5,6 @@ import edu.northeastern.cs5200.entity.ProductEntity;
 import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.exception.AccessDeniedException;
 import edu.northeastern.cs5200.service.InventoryService;
-import edu.northeastern.cs5200.service.ProductService;
 import edu.northeastern.cs5200.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +22,10 @@ public class InventoryController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("user/{userId}/addProduct")
-    public InventoryEntity addProductsToSellerInventory(@PathVariable int userId, @RequestBody ProductEntity product, @RequestBody int price, @RequestBody int qty) throws AccessDeniedException {
+    @PostMapping("user/{userId}/price/{price}/qty/{qty}/addProduct")
+    public InventoryEntity addProductsToSellerInventory(@PathVariable int userId, @PathVariable int price, @PathVariable int qty, @RequestBody ProductEntity product) throws AccessDeniedException {
         UserEntity user = userService.getUserById(userId);
-        if(user.getUserType() != "Seller")
+        if(!user.getUserType().equals("Seller"))
             throw new AccessDeniedException(new Throwable("User not a seller| Can't add inventory!"));
         return inventoryService.addInventory(user, product, price, qty);
     }

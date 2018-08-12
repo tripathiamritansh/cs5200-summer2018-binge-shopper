@@ -1,8 +1,8 @@
 package edu.northeastern.cs5200.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,7 +15,7 @@ public class InventoryEntity {
     @Column(name = "id")
     private int id;
     @Column(name = "date", nullable = false, updatable = false)
-    @UpdateTimestamp
+    @CreationTimestamp
     private Date date;
 
     @Column(name = "price")

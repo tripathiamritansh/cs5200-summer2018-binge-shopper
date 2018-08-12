@@ -29,12 +29,14 @@ public class WishlistService {
         if(user == null)
             throw new NotFoundException("User not found!");
         ProductEntity pr = productRepository.findById(product.getId());
-        if(pr == null)
+        if(pr == null) {
             productRepository.save(product);
+            pr = product;
+        }
 
         WishlistEntity wishlist = wishlistRepository.findByUserIdAndProductId(userId, product.getId());
         if(wishlist == null)
-            wishlistRepository.save(new WishlistEntity(user, product));
+            wishlistRepository.save(new WishlistEntity(user, pr));
     }
 
     public List<WishlistEntity> getProductsInBuyerWishlist(int userId){
