@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import neu.edu.bingeshopper.Repository.Model.Repository;
 import neu.edu.bingeshopper.Repository.Model.User;
@@ -22,7 +23,7 @@ public class UserRepository extends Repository {
     private UserManager userManager;
 
     @Inject
-    public UserRepository(Retrofit retrofit, SharedPreferences sharedPreferences, UserManager userManager) {
+    public UserRepository(@Named("aws") Retrofit retrofit, SharedPreferences sharedPreferences, UserManager userManager) {
         this.sharedPreferences = sharedPreferences;
         this.userManager = userManager;
         this.userServices = retrofit.create(UserServices.class);

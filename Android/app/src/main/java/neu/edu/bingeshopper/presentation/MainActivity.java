@@ -85,6 +85,11 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
                 navigate(LoginFragment.newInstance());
                 return true;
 
+            case R.id.logout:
+                userManager.saveUser(null);
+                updateNavBar();
+                return true;
+
         }
         return false;
     }
@@ -97,12 +102,16 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         } else if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.SELLER) {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.drawer_view_seller_logout);
+        } else {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.drawer_view_login);
         }
 
     }
 
 
     private void navigate(Fragment fragment) {
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, fragment);
         fragmentTransaction.addToBackStack(null);
