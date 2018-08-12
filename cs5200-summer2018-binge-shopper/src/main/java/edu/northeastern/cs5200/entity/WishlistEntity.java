@@ -15,8 +15,6 @@ public class WishlistEntity {
     private int id;
     @Column(name = "date", nullable = false, updatable = false)
     private Date date;
-    @Column(name = "qty")
-    private int qty;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(optional = false, fetch=FetchType.EAGER)
@@ -33,7 +31,6 @@ public class WishlistEntity {
         return "WishlistEntity{" +
                 "id=" + id +
                 ", date=" + date +
-                ", qty=" + qty +
                 ", user=" + user +
                 ", product=" + product +
                 '}';
@@ -42,10 +39,9 @@ public class WishlistEntity {
     public WishlistEntity() {
     }
 
-    public WishlistEntity(UserEntity user, ProductEntity product, int qty) {
+    public WishlistEntity(UserEntity user, ProductEntity product) {
         this.user = user;
         this.product = product;
-        this.qty = qty;
     }
 
     public int getId() {
@@ -62,14 +58,6 @@ public class WishlistEntity {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public int getQty() {
-        return qty;
-    }
-
-    public void setQty(int qty) {
-        this.qty = qty;
     }
 
     public UserEntity getUser() {

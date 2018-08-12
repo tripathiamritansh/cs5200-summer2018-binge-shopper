@@ -28,11 +28,9 @@ public class ProductService {
         ProductEntity p = productRepository.findById(product.getId());
         if(p == null)
             throw new NotFoundException("Product not found!");
-        p.setCategory(product.getCategory());
         p.setImage_url(product.getImage_url());
         p.setName(product.getName());
-        p.setPrice(product.getPrice());
-        p.setQty(product.getQty());
+        p.setDescription(product.getDescription());
         return productRepository.save(p);
     }
 
