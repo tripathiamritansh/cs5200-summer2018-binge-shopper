@@ -5,10 +5,12 @@ import edu.northeastern.cs5200.entity.ProductEntity;
 import edu.northeastern.cs5200.entity.TransactionEntity;
 import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.exception.NotFoundException;
+import edu.northeastern.cs5200.repository.OrderRepository;
 import edu.northeastern.cs5200.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +21,7 @@ public class TransactionService {
     private ProductService productService;
 
     @Autowired
-    private OrderService orderService;
+    private OrderRepository orderRepository;
 
     @Autowired
     private UserService userService;
@@ -28,7 +30,7 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     public TransactionEntity addTransaction(int productId, int sellerId, int orderId, TransactionEntity transaction) throws NotFoundException {
-        OrderEntity order = orderService.getOrderById(orderId);
+        OrderEntity order = orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("No order entity with this id"));
         if(order == null)
             throw new NotFoundException("Order does not exist!");
         UserEntity seller = userService.getUserById(sellerId);

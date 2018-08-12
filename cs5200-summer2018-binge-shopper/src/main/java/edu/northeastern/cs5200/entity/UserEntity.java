@@ -25,7 +25,6 @@ public class UserEntity {
     private String userType;
     @Column(name = "approved")
     private boolean approved;
-    //, columnDefinition = "default False"
 
     @Override
     public String toString() {
