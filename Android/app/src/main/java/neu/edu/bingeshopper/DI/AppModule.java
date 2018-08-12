@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -30,8 +31,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
-    //    private final String baseurl = "http://10.0.2.2:8080/api/";
-    private final String baseurl = "http://ec2-18-219-181-207.us-east-2.compute.amazonaws.com/";
+    private final String baseurl = "http://10.0.2.2:8080/api/";
+    private final String walmartBaseUrl = "http://api.walmartlabs.com/";
+//    private final String baseurl = "http://ec2-18-219-181-207.us-east-2.compute.amazonaws.com/";
 
     @Provides
     @Singleton
@@ -42,7 +44,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public Retrofit retrofit(OkHttpClient okHttpClient,
+    @Named("aws")
+    public Retrofit retrofit1(OkHttpClient okHttpClient,
                              GsonConverterFactory gsonConverterFactory, Gson gson) {
         return new Retrofit.Builder()
                 .baseUrl(baseurl)
@@ -50,6 +53,19 @@ public class AppModule {
                 .client(okHttpClient)
                 .build();
     }
+
+    @Provides
+    @Singleton
+    @Named("walmart")
+    public Retrofit retrofit2(OkHttpClient okHttpClient,
+                             GsonConverterFactory gsonConverterFactory) {
+        return new Retrofit.Builder()
+                .baseUrl(walmartBaseUrl)
+                .addConverterFactory(gsonConverterFactory)
+                .client(okHttpClient)
+                .build();
+    }
+
 
     @Provides
     @Singleton
