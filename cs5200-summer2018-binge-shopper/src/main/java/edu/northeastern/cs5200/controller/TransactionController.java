@@ -15,10 +15,10 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @PostMapping("user/{userId}/add")
+    @PostMapping("order/{orderId}/seller/{sellerId}/product/{productId}/qty/{qty}/add")
     public TransactionEntity addTransaction(@PathVariable int orderId, @PathVariable int sellerId,
-                                            @PathVariable int productId, @RequestBody TransactionEntity transaction) throws NotFoundException {
-        return transactionService.addTransaction(productId, sellerId, orderId, transaction);
+                                            @PathVariable int productId, @PathVariable int qty) throws NotFoundException {
+        return transactionService.addTransaction(orderId, sellerId, productId, qty);
     }
 
     @GetMapping("user/{userId}/getBySeller")
@@ -28,7 +28,7 @@ public class TransactionController {
 
     @GetMapping("order/{orderId}/getByOrder")
     public List<TransactionEntity> getTransactionByOrder(@PathVariable int orderId){
-        return transactionService.getTransactionBySeller(orderId);
+        return transactionService.getTransactionByOrder(orderId);
     }
 
     @GetMapping("product/{productId}/getByProduct")
@@ -36,9 +36,10 @@ public class TransactionController {
         return transactionService.getTransactionByProduct(productId);
     }
 
-    @PostMapping("update")
-    public TransactionEntity updateTransaction(@RequestBody TransactionEntity transaction){
-        return transactionService.updateTransaction(transaction);
+    @PostMapping("order/{orderId}/product/{productId}/qty/{qty}/update")
+    public TransactionEntity updateTransaction(@PathVariable int orderId, @PathVariable int productId,
+                                               @PathVariable int qty){
+        return transactionService.updateTransaction(orderId, productId, qty);
     }
 
     @PostMapping("delete")
