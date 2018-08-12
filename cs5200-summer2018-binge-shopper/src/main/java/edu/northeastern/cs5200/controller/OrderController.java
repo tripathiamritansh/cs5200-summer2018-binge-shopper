@@ -3,6 +3,7 @@ package edu.northeastern.cs5200.controller;
 import edu.northeastern.cs5200.entity.OrderEntity;
 import edu.northeastern.cs5200.service.OrderService;
 import edu.northeastern.cs5200.wrapper.OrderTranscationWrapper;
+import edu.northeastern.cs5200.wrapper.ProductsWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,7 @@ public class OrderController {
     }
 
     @DeleteMapping("{orderId}/deleteProducts")
-    public void deleteProductsFromOrder(@PathVariable int orderId, List<Integer> products){
+    public void deleteProductsFromOrder(@PathVariable int orderId, @RequestBody List<ProductsWrapper> products){
         orderService.deleteProductsFromOrder(orderId, products);
     }
 }
