@@ -25,17 +25,17 @@ public class OrderController {
         return orderService.getOrderByBuyer(userId);
     }
 
-    @PostMapping("{orderId}/update")
+    @PutMapping("{orderId}/update")
     public OrderEntity updateOrder(@PathVariable int orderId, @RequestBody List<OrderTranscationWrapper> transactions){
         return orderService.updateOrderForBuyer(orderId, transactions);
     }
 
-    @PostMapping("delete")
+    @DeleteMapping("delete")
     public void deleteOrder(@PathVariable int orderId){
         orderService.deleteOrder(orderId);
     }
 
-    @PostMapping("delete")
+    @DeleteMapping("{orderId}/deleteProducts")
     public void deleteProductsFromOrder(@PathVariable int orderId, List<Integer> products){
         orderService.deleteProductsFromOrder(orderId, products);
     }

@@ -29,7 +29,7 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     public TransactionEntity addTransaction(int orderId, int sellerId, int productId, int qty) throws NotFoundException {
-        OrderEntity order = orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("No order entity with this id"));
+        OrderEntity order = orderRepository.findById(orderId);
         if(order == null)
             throw new NotFoundException("Order does not exist!");
         UserEntity seller = userService.getUserById(sellerId);
@@ -65,7 +65,7 @@ public class TransactionService {
     }
 
     public TransactionEntity updateTransaction(int orderId, int productId, int qty){
-        OrderEntity order = orderRepository.findById(orderId).orElseThrow(()-> new EntityNotFoundException("No order entity with this id"));
+        OrderEntity order = orderRepository.findById(orderId);
         if(order == null)
             throw new NotFoundException("Order does not exist!");
         ProductEntity product = productService.getProductById(productId);

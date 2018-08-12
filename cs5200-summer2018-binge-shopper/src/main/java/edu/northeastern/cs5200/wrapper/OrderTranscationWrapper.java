@@ -1,12 +1,13 @@
 package edu.northeastern.cs5200.wrapper;
 
-import edu.northeastern.cs5200.entity.OrderEntity;
-
 public class OrderTranscationWrapper {
 
     int productId;
     int sellerId;
     int qty;
+
+    public OrderTranscationWrapper() {
+    }
 
     public OrderTranscationWrapper(int productId, int sellerId, int qty) {
         this.productId = productId;
