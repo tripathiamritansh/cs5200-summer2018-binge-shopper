@@ -11,8 +11,10 @@ import javax.inject.Named;
 import neu.edu.bingeshopper.Repository.Model.ImageEntity;
 import neu.edu.bingeshopper.Repository.Model.Item;
 import neu.edu.bingeshopper.Repository.Model.Product;
+import neu.edu.bingeshopper.Repository.Model.ProductReview;
 import neu.edu.bingeshopper.Repository.Model.Repository;
 import neu.edu.bingeshopper.Repository.Model.WalmartResponse;
+import neu.edu.bingeshopper.network.ProductService;
 import neu.edu.bingeshopper.network.WalmartService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,17 +25,20 @@ public class ProductRepository extends Repository {
 
 
     private WalmartService walmartService;
+    private ProductService productService;
 
     @Inject
     public ProductRepository(@Named("walmart") Retrofit retrofitWalmart, @Named("aws") Retrofit awsRetrofit) {
 
         this.walmartService = retrofitWalmart.create(WalmartService.class);
+        this.productService = awsRetrofit.create(ProductService.class);
     }
 
 
     public class ProductRepositoryResponse implements ResponseValue {
         private String message;
         private List<Product> products;
+        private List<ProductReview> productReviews;
 
         public ProductRepositoryResponse(List<Product> products) {
             this.products = products;
@@ -42,6 +47,7 @@ public class ProductRepository extends Repository {
         public ProductRepositoryResponse(String message) {
             this.message = message;
         }
+
 
         @Nullable
         public String getMessage() {
@@ -66,23 +72,25 @@ public class ProductRepository extends Repository {
                         String description = item.getLongDescription();
                         String imageUrl = "";
                         String thumbnail = "";
-                        for (ImageEntity imageEntity : item.getImageEntities()) {
-                            if (imageEntity.getEntityType().equals("PRIMARY")) {
-                                if (item.getImageEntities().get(0).getLargeImage() != null) {
+                        if (item != null && item.getImageEntities() != null) {
+                            for (ImageEntity imageEntity : item.getImageEntities()) {
+                                if (imageEntity.getEntityType().equals("PRIMARY")) {
+                                    if (item.getImageEntities().get(0).getLargeImage() != null) {
 
-                                    imageUrl = imageEntity.getLargeImage();
-                                } else {
-                                    imageUrl = imageEntity.getMediumImage();
+                                        imageUrl = imageEntity.getLargeImage();
+                                    } else {
+                                        imageUrl = imageEntity.getMediumImage();
+                                    }
+                                    thumbnail = imageEntity.getThumbnailImage();
                                 }
-                                thumbnail = imageEntity.getThumbnailImage();
                             }
+
+
+                            products.add(new Product(item.getItemId(), name, description, imageUrl, thumbnail));
                         }
-
-
-                        products.add(new Product(item.getItemId(), name, description, imageUrl, thumbnail));
                     }
                     callBack.onSuccess(new ProductRepositoryResponse(products));
-                }else{
+                } else {
                     callBack.onError(new ProductRepositoryResponse("Error Fetching data, Please try again"));
                 }
             }
@@ -93,6 +101,26 @@ public class ProductRepository extends Repository {
             }
         });
 
+    }
+
+
+    public void getProductReview(int id, final RepositoryCallBack callBack) {
+        productService.getProductReview(id).enqueue(new Callback<List<ProductReview>>() {
+            @Override
+            public void onResponse(Call<List<ProductReview>> call, Response<List<ProductReview>> response) {
+                if (response.isSuccessful()) {
+                    callBack.onSuccess(response.body());
+                } else {
+                    callBack.onError(new ProductRepositoryResponse("Error Fetching reviews, Please try again"));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductReview>> call, Throwable t) {
+                callBack.onError(new ProductRepositoryResponse(t.getMessage()));
+            }
+        });
     }
 
 }

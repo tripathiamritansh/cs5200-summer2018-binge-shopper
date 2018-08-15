@@ -1,5 +1,7 @@
 package neu.edu.bingeshopper.presentation;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,14 +15,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.UserType;
+import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.presentation.home.HomeFragment;
 import neu.edu.bingeshopper.presentation.login.LoginFragment;
+import neu.edu.bingeshopper.presentation.productList.ProductListFragment;
 
 import static neu.edu.bingeshopper.R.layout.activity_main;
 
@@ -71,6 +76,23 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                ProductListFragment fragment = ProductListFragment.newInstance(query, "relevance");
+                NavigationUtil.navigate(fragment, getSupportFragmentManager().beginTransaction(), R.id.content_frame);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 

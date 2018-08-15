@@ -31,9 +31,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
-    private final String baseurl = "http://10.0.2.2:8080/api/";
+//    private final String baseurl = "http://10.0.2.2:8080/api/";
     private final String walmartBaseUrl = "http://api.walmartlabs.com/";
-//    private final String baseurl = "http://ec2-18-219-181-207.us-east-2.compute.amazonaws.com/";
+    private final String baseurl = "http://ec2-18-219-181-207.us-east-2.compute.amazonaws.com/";
 
     @Provides
     @Singleton

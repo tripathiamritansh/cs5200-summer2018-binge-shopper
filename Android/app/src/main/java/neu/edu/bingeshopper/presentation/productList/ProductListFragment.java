@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +56,7 @@ public class ProductListFragment extends DaggerFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductListViewModel.class);
-        if(getArguments()!=null){
+        if (getArguments() != null) {
             query = getArguments().getString(QUERY);
             sort = getArguments().getString(SORT);
         }
@@ -75,9 +74,9 @@ public class ProductListFragment extends DaggerFragment {
     private void init(final FragmentProductListBinding binding) {
         binding.productListRecyclerView.setVisibility(View.GONE);
         binding.productListProgressBar.setVisibility(View.VISIBLE);
-        adapter = new ProductListAdapter();
+        adapter = new ProductListAdapter(getFragmentManager());
         recyclerView = binding.productListRecyclerView;
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setAdapter(adapter);
 
         Observer<ProductListViewModel.ProductListViewModelResponse> observer = new Observer<ProductListViewModel.ProductListViewModelResponse>() {
