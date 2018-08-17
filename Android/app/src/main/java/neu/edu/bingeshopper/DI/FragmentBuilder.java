@@ -2,6 +2,7 @@ package neu.edu.bingeshopper.DI;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
+import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListFragment;
 import neu.edu.bingeshopper.presentation.SellerList.SellerListFragment;
 import neu.edu.bingeshopper.presentation.cart.CartFragment;
 import neu.edu.bingeshopper.presentation.login.LoginFragment;
@@ -34,4 +35,9 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector
     abstract ProfileFragment provideProfileFragment();
+
+    @ContributesAndroidInjector
+    abstract ProductLinearListFragment provideProductLinearListFragment();
+
+
 }

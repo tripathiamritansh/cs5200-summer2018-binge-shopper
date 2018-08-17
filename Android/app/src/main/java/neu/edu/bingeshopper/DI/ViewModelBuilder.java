@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
+import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListViewModel;
 import neu.edu.bingeshopper.presentation.SellerList.SellerListViewModel;
 import neu.edu.bingeshopper.presentation.cart.CartViewModel;
 import neu.edu.bingeshopper.presentation.login.LoginViewModel;
@@ -52,5 +53,11 @@ public abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(ProfileViewModel.class)
     abstract ViewModel bindProfileViewModel(ProfileViewModel viewModel);
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProductLinearListViewModel.class)
+    abstract ViewModel bindProductLinearListViewModel(ProductLinearListViewModel viewModel);
 
 }

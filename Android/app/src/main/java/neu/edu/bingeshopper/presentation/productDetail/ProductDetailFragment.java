@@ -78,6 +78,11 @@ public class ProductDetailFragment extends DaggerFragment {
             public void OnAddToInventoryClicked(int qty, int price, Product product) {
                 viewModel.addProductToInventory(Objects.requireNonNull(userManager.getUser()).getId(), qty, price, product);
             }
+
+            @Override
+            public void OnAddToWishListClicked(Product product) {
+                viewModel.addToWishList(userManager.getUser().getId(), product);
+            }
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -87,6 +92,13 @@ public class ProductDetailFragment extends DaggerFragment {
             items.add(product);
             adapter.setData(items);
         }
+
+        Observer<String> wishListObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();
+            }
+        };
 
         Observer<ProductDetailViewModel.ProductDetailsViewModelResponse> observer = new Observer<ProductDetailViewModel.ProductDetailsViewModelResponse>() {
             @Override
@@ -108,6 +120,7 @@ public class ProductDetailFragment extends DaggerFragment {
 
             }
         };
+        viewModel.getWishListLiveData().observe(this, wishListObserver);
         viewModel.getResponseMutableLiveData().observe(this, observer);
         viewModel.fetchReviews(product.getId());
 
@@ -115,6 +128,8 @@ public class ProductDetailFragment extends DaggerFragment {
 
     interface ProductDetailFragmentCallBack {
         void OnAddToInventoryClicked(int qty, int price, Product product);
+
+        void OnAddToWishListClicked(Product product);
     }
 
 

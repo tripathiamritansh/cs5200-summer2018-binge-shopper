@@ -145,6 +145,12 @@ public class ProductDetailAdapter extends RecyclerView.Adapter {
             Picasso.get().load(product.getImage_url()).into(binding.productImage);
             binding.productName.setText(product.getName());
             binding.productDescription.setText(product.getDescription());
+            binding.wishListButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callBack.OnAddToWishListClicked((Product) data.get(pos));
+                }
+            });
             binding.executePendingBindings();
         }
     }

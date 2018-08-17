@@ -18,6 +18,7 @@ public class ProductDetailViewModel extends ViewModel {
 
     private ProductRepository repository;
     private MutableLiveData<ProductDetailsViewModelResponse> responseMutableLiveData;
+    private MutableLiveData<String> wishListLiveData;
     private UserManager userManager;
     private InventoryRepository inventoryRepository;
 
@@ -35,6 +36,12 @@ public class ProductDetailViewModel extends ViewModel {
         return responseMutableLiveData;
     }
 
+    public MutableLiveData<String> getWishListLiveData() {
+        if (wishListLiveData == null) {
+            wishListLiveData = new MutableLiveData<>();
+        }
+        return wishListLiveData;
+    }
 
     public void fetchReviews(int productId) {
 
@@ -51,6 +58,20 @@ public class ProductDetailViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void addToWishList(int userId, Product product) {
+        inventoryRepository.addToWishList(userId, product, new Repository.RepositoryCallBack<InventoryRepository.InventoryRepositoryResponse>() {
+            @Override
+            public void onSuccess(InventoryRepository.InventoryRepositoryResponse response) {
+                wishListLiveData.setValue(response.getMessage());
+            }
+
+            @Override
+            public void onError(InventoryRepository.InventoryRepositoryResponse response) {
+                wishListLiveData.setValue(response.getMessage());
+            }
+        });
     }
 
     public void addProductToInventory(int userId, int qty, int price, Product product) {
