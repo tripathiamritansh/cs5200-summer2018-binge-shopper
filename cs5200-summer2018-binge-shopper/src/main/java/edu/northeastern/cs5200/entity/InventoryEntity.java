@@ -14,6 +14,7 @@ public class InventoryEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
+
     @Column(name = "date", nullable = false, updatable = false)
     @CreationTimestamp
     private Date date;

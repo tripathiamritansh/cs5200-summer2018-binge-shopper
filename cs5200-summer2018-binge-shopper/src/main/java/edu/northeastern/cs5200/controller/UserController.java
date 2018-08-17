@@ -21,20 +21,20 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("login")
-    public UserEntity login(String username, String password, HttpSession session) throws AccessDeniedException, AuthenticationException {
+    public UserEntity login(String username, String password, HttpSession session) throws AccessDeniedException,
+            AuthenticationException {
 
         UserEntity user = userService.findUserByUsername(username);
 
-        if(user != null  && BCrypt.checkpw(password, user.getPassword())){
+        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
 
-            if(user.getUserType().equals("Buyer") || user.getUserType().equals("Seller") && !user.getApproved()){
+            if ((user.getUserType().equals("Buyer") || user.getUserType().equals("Seller")) && !user.getApproved()) {
                 throw new AccessDeniedException(new Throwable("User requires admin approval to login!"));
             }
             session.setAttribute("user_session", user);
             session.setMaxInactiveInterval(300);
             return user;
-        }
-        else
+        } else
             throw new AuthenticationException("Invalid username and password| Try again !");
 
     }
@@ -42,16 +42,18 @@ public class UserController {
     @PostMapping("register")
     public UserEntity register(@RequestBody UserEntity u, HttpSession session) throws NotFoundException {
 
-        if(userService.findUserByUsername(u.getUsername()) != null){
+        if (userService.findUserByUsername(u.getUsername()) != null) {
             throw new AuthenticationException("User already registered| Login directly!");
         }
 
         u.setPassword(BCrypt.hashpw(u.getPassword(), BCrypt.gensalt()));
         UserEntity user = userService.addUser(u);
 
-        if((user.getUserType().equals("Buyer") || user.getUserType().equals("Seller")) && user.getApproved() == false){
-            throw new AccessDeniedException(new Throwable("User registered successfully| Needs to be approved by Admin!"));
-        }
+//        if((user.getUserType().equals("Buyer") || user.getUserType().equals("Seller")) && user.getApproved() ==
+// false){
+//            throw new AccessDeniedException(new Throwable("User registered successfully| Needs to be approved by
+// Admin!"));
+//        }
 
         session.setAttribute("user_session", user);
         session.setMaxInactiveInterval(300);
@@ -59,12 +61,12 @@ public class UserController {
     }
 
     @PutMapping("update")
-    public UserEntity update(@RequestBody UserEntity user, HttpSession session) throws Exception{
+    public UserEntity update(@RequestBody UserEntity user, HttpSession session) throws Exception {
         return userService.updateUser(user);
     }
 
     @DeleteMapping("logout")
-    public ResponseEntity logout(HttpSession session){
+    public ResponseEntity logout(HttpSession session) {
         session.invalidate();
         return new ResponseEntity("{}", HttpStatus.OK);
     }

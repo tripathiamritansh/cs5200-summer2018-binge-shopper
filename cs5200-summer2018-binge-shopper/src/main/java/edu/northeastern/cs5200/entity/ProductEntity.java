@@ -10,10 +10,12 @@ public class ProductEntity {
     private int id;
     @Column(name = "name")
     private String name;
-    @Column(name = "description")
+    @Lob
+    @Column(length = 1000000)
     private String description;
     @Column(name = "image_url")
     private String image_url;
+
     @Override
     public String toString() {
         return "ProductEntity{" +
