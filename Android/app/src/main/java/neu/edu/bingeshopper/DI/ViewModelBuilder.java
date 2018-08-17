@@ -10,6 +10,7 @@ import neu.edu.bingeshopper.presentation.cart.CartViewModel;
 import neu.edu.bingeshopper.presentation.login.LoginViewModel;
 import neu.edu.bingeshopper.presentation.productDetail.ProductDetailViewModel;
 import neu.edu.bingeshopper.presentation.productList.ProductListViewModel;
+import neu.edu.bingeshopper.presentation.profile.ProfileViewModel;
 import neu.edu.bingeshopper.presentation.signup.SignUpViewModel;
 
 @Module
@@ -46,5 +47,10 @@ public abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(CartViewModel.class)
     abstract ViewModel bindCartViewModel(CartViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel.class)
+    abstract ViewModel bindProfileViewModel(ProfileViewModel viewModel);
 
 }

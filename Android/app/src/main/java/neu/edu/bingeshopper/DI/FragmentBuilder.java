@@ -7,6 +7,7 @@ import neu.edu.bingeshopper.presentation.cart.CartFragment;
 import neu.edu.bingeshopper.presentation.login.LoginFragment;
 import neu.edu.bingeshopper.presentation.productDetail.ProductDetailFragment;
 import neu.edu.bingeshopper.presentation.productList.ProductListFragment;
+import neu.edu.bingeshopper.presentation.profile.ProfileFragment;
 import neu.edu.bingeshopper.presentation.signup.SignUpFragment;
 
 @Module
@@ -30,4 +31,7 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector
     abstract CartFragment provideCartFragment();
+
+    @ContributesAndroidInjector
+    abstract ProfileFragment provideProfileFragment();
 }

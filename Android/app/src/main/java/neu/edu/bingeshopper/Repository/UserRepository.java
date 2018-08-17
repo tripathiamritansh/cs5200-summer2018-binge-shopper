@@ -52,6 +52,11 @@ public class UserRepository extends Repository {
             this.message = message;
         }
 
+        public UserRepositoryResponse(User user, String message) {
+            this.user = user;
+            this.message = message;
+        }
+
         @Nullable
         public String getMessage() {
             return message;
@@ -98,6 +103,25 @@ public class UserRepository extends Repository {
                     callBack.onSuccess(new UserRepositoryResponse(response.body()));
                 } else {
                     callBack.onError(new UserRepositoryResponse(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                callBack.onError(new UserRepositoryResponse(t.getMessage()));
+            }
+        });
+    }
+
+    public void updateUser(User user, final RepositoryCallBack<UserRepositoryResponse> callBack) {
+        userServices.update(user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    userManager.saveUser(response.body());
+                    callBack.onSuccess(new UserRepositoryResponse(response.body(), "Successfully Updated!"));
+                } else {
+                    callBack.onError(new UserRepositoryResponse("Error Updating User, please try again!"));
                 }
             }
 
