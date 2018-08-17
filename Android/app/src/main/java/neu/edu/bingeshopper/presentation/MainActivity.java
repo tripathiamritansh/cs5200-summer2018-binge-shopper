@@ -2,6 +2,7 @@ package neu.edu.bingeshopper.presentation;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,8 +22,10 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import neu.edu.bingeshopper.R;
+import neu.edu.bingeshopper.Repository.Model.Cart;
 import neu.edu.bingeshopper.Repository.Model.UserType;
 import neu.edu.bingeshopper.common.NavigationUtil;
+import neu.edu.bingeshopper.presentation.cart.CartFragment;
 import neu.edu.bingeshopper.presentation.home.HomeFragment;
 import neu.edu.bingeshopper.presentation.login.LoginFragment;
 import neu.edu.bingeshopper.presentation.productList.ProductListFragment;
@@ -34,6 +37,9 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
     private NavigationView navigationView;
     @Inject
     neu.edu.bingeshopper.common.UserManager userManager;
+
+    @Inject
+    Cart cart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +118,16 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
             case R.id.logout:
                 userManager.saveUser(null);
                 updateNavBar();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                cart.clearCart();
+                finish();
+                drawerLayout.closeDrawers();
+                return true;
+
+            case R.id.cart:
+                navigate(CartFragment.newInstance());
                 drawerLayout.closeDrawers();
                 return true;
 

@@ -1,5 +1,7 @@
 package neu.edu.bingeshopper.Repository.Model;
 
+import java.util.Objects;
+
 public class CartItem {
 
     private Product product;
@@ -44,5 +46,20 @@ public class CartItem {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(product, cartItem.product) &&
+                Objects.equals(Seller, cartItem.Seller);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(product, Seller);
     }
 }

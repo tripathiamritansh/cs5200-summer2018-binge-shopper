@@ -30,9 +30,6 @@ public class Cart {
 
     public boolean saveToCart(CartItem item) {
         List<CartItem> cartItem = getCartItems();
-        if (cartItem == null) {
-            cartItem = new ArrayList<>();
-        }
         for (CartItem cItem : cartItem) {
             if ((cItem.getProduct().getId() == item.getProduct().getId()) && (cItem.getSeller().getId() == item.getSeller().getId())) {
                 if (((cItem.getQty() - cItem.getInventory().getQty()) == 0)) {
@@ -48,23 +45,42 @@ public class Cart {
         return true;
     }
 
+    public int getCartTotal() {
+        List<CartItem> cartItems = getCartItems();
+        int total = 0;
+        for (CartItem cartItem : cartItems) {
+            total += (cartItem.getQty() * cartItem.getInventory().getPrice());
+        }
+        return total;
+    }
+
+    public boolean removeFromCart(CartItem item) {
+        List<CartItem> cartItems = getCartItems();
+        boolean isRemoved = cartItems.remove(item);
+        if (isRemoved) {
+            saveInSharePref(cartItems);
+        }
+        return isRemoved;
+    }
 
     public void saveInSharePref(List<CartItem> cartItems) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Type sectionListType = new TypeToken<List<CartItem>>(){}.getType();
-        String json = new Gson().toJson(cartItems,sectionListType);
+        Type sectionListType = new TypeToken<List<CartItem>>() {
+        }.getType();
+        String json = new Gson().toJson(cartItems, sectionListType);
         editor.putString(Constants.SHARED_PREF_CART, json);
         editor.apply();
     }
 
     @Nullable
-    private List<CartItem> getCartItems() {
+    public List<CartItem> getCartItems() {
         String userJson = sharedPreferences.getString(Constants.SHARED_PREF_CART, null);
         Gson gson = new Gson();
-        if (userJson.isEmpty()) {
+        if (userJson == null || userJson.isEmpty()) {
             return new ArrayList<CartItem>();
         } else {
-            Type type = new TypeToken<List<CartItem>>(){}.getType();
+            Type type = new TypeToken<List<CartItem>>() {
+            }.getType();
             return gson.fromJson(userJson, type);
         }
     }

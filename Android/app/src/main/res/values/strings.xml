@@ -25,6 +25,7 @@
     <string name="user_name">User Name</string>
     <string name="sign_up">Sign Up</string>
     <string name="sorry_no_seller_found_with_requested_quantity_please_change_the_quantity_or_choose_another_product">Sorry No Seller found with requested quantity! Please change the quantity or choose another product</string>
+    <string name="no_item_in_the_cart">No Item in the cart</string>
 
 
     <string-array name="usertype_array">

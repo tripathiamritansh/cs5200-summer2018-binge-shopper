@@ -3,6 +3,8 @@ package neu.edu.bingeshopper.Repository.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
 public class Product implements Parcelable, AdapterItem {
 
     private int id;
@@ -69,6 +71,20 @@ public class Product implements Parcelable, AdapterItem {
                 '}';
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
+    }
 
     @Override
     public int describeContents() {
