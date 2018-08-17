@@ -6,6 +6,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
 import neu.edu.bingeshopper.presentation.SellerList.SellerListViewModel;
+import neu.edu.bingeshopper.presentation.cart.CartViewModel;
 import neu.edu.bingeshopper.presentation.login.LoginViewModel;
 import neu.edu.bingeshopper.presentation.productDetail.ProductDetailViewModel;
 import neu.edu.bingeshopper.presentation.productList.ProductListViewModel;
@@ -40,5 +41,10 @@ public abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(SellerListViewModel.class)
     abstract ViewModel bindSellerListViewModel(SellerListViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CartViewModel.class)
+    abstract ViewModel bindCartViewModel(CartViewModel viewModel);
 
 }

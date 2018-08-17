@@ -1,5 +1,7 @@
 package neu.edu.bingeshopper.presentation.cart;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,7 +22,9 @@ import dagger.android.support.DaggerFragment;
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.Cart;
 import neu.edu.bingeshopper.Repository.Model.CartItem;
+import neu.edu.bingeshopper.common.UserManager;
 import neu.edu.bingeshopper.databinding.FragmentCartBinding;
+import neu.edu.bingeshopper.presentation.ViewModelFactory;
 
 public class CartFragment extends DaggerFragment {
 
@@ -30,6 +34,13 @@ public class CartFragment extends DaggerFragment {
     @Inject
     Cart cart;
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+
+    @Inject
+    UserManager userManager;
+
+    private CartViewModel viewModel;
 
 
     public static CartFragment newInstance() {
@@ -41,6 +52,14 @@ public class CartFragment extends DaggerFragment {
         return fragment;
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CartViewModel.class);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,6 +69,25 @@ public class CartFragment extends DaggerFragment {
     }
 
     private void init(final FragmentCartBinding binding) {
+
+        Observer<CartViewModel.CartViewModelResponse> observer = new Observer<CartViewModel.CartViewModelResponse>() {
+            @Override
+            public void onChanged(@Nullable CartViewModel.CartViewModelResponse cartViewModelResponse) {
+                Toast.makeText(getContext(), cartViewModelResponse.getMessage(), Toast.LENGTH_LONG);
+                switch (cartViewModelResponse.getStatus()) {
+                    case Success:
+                        getFragmentManager().popBackStack();
+                        break;
+                    case Error:
+                        break;
+
+                }
+            }
+        };
+
+        viewModel.getResponseMutableLiveData().observe(this, observer);
+
+
         final List<CartItem> cartItems = cart.getCartItems();
         updateView(binding, cartItems);
         recyclerView = binding.cartRecyclerView;
@@ -81,7 +119,7 @@ public class CartFragment extends DaggerFragment {
             binding.placeOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    viewModel.placeOrder(userManager.getUser().getId(), cart.getCartItems());
                 }
             });
         }
