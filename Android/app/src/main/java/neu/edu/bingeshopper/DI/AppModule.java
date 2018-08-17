@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import neu.edu.bingeshopper.Repository.Model.Cart;
 import neu.edu.bingeshopper.common.Constants;
 import neu.edu.bingeshopper.common.UserManager;
 import okhttp3.Cache;
@@ -31,9 +32,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
-//    private final String baseurl = "http://10.0.2.2:8080/api/";
+    private final String baseurl = "http://10.0.2.2:8080/";
     private final String walmartBaseUrl = "http://api.walmartlabs.com/";
-    private final String baseurl = "http://ec2-18-219-181-207.us-east-2.compute.amazonaws.com/";
+//    private final String baseurl = "http://ec2-18-219-181-207.us-east-2.compute.amazonaws.com/";
 
     @Provides
     @Singleton
@@ -46,7 +47,7 @@ public class AppModule {
     @Singleton
     @Named("aws")
     public Retrofit retrofit1(OkHttpClient okHttpClient,
-                             GsonConverterFactory gsonConverterFactory, Gson gson) {
+                              GsonConverterFactory gsonConverterFactory, Gson gson) {
         return new Retrofit.Builder()
                 .baseUrl(baseurl)
                 .addConverterFactory(gsonConverterFactory)
@@ -58,7 +59,7 @@ public class AppModule {
     @Singleton
     @Named("walmart")
     public Retrofit retrofit2(OkHttpClient okHttpClient,
-                             GsonConverterFactory gsonConverterFactory) {
+                              GsonConverterFactory gsonConverterFactory) {
         return new Retrofit.Builder()
                 .baseUrl(walmartBaseUrl)
                 .addConverterFactory(gsonConverterFactory)
@@ -145,5 +146,11 @@ public class AppModule {
     @Singleton
     public UserManager getUserManager(SharedPreferences sharedPreferences) {
         return new UserManager(sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    public Cart getCart(SharedPreferences sharedPreferences) {
+        return new Cart(sharedPreferences);
     }
 }

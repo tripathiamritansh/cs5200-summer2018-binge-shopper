@@ -11,4 +11,6 @@ public interface ProductService {
 
     @GET("api/product-review/product/{productId}/getByProduct")
     Call<List<ProductReview>> getProductReview(@Path("productId") int id);
+
+
 }

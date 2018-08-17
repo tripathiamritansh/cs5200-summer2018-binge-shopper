@@ -9,17 +9,15 @@ public class Product implements Parcelable, AdapterItem {
     private String name;
     private String description;
     private String image_url;
-    private String thumbnail_url;
 
     public Product() {
     }
 
-    public Product(int id, String name, String description, String image_url, String thumbnail_url) {
+    public Product(int id, String name, String description, String image_url) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image_url = image_url;
-        this.thumbnail_url = thumbnail_url;
     }
 
     public Product(String name, String description, String image_url) {
@@ -60,13 +58,6 @@ public class Product implements Parcelable, AdapterItem {
         this.image_url = image_url;
     }
 
-    public String getThumbnail_url() {
-        return thumbnail_url;
-    }
-
-    public void setThumbnail_url(String thumbnail_url) {
-        this.thumbnail_url = thumbnail_url;
-    }
 
     @Override
     public String toString() {
@@ -90,7 +81,6 @@ public class Product implements Parcelable, AdapterItem {
         dest.writeString(this.name);
         dest.writeString(this.description);
         dest.writeString(this.image_url);
-        dest.writeString(this.thumbnail_url);
     }
 
     protected Product(Parcel in) {
@@ -98,7 +88,6 @@ public class Product implements Parcelable, AdapterItem {
         this.name = in.readString();
         this.description = in.readString();
         this.image_url = in.readString();
-        this.thumbnail_url = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {

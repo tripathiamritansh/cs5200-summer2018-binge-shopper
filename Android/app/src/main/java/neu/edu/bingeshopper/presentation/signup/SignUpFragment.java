@@ -115,9 +115,9 @@ public class SignUpFragment extends DaggerFragment implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
         if (adapterView.getItemAtPosition(i).toString().equals("Buyer")) {
-            usertype = UserType.BUYER;
+            usertype = UserType.Buyer;
         } else if (adapterView.getItemAtPosition(i).toString().equals("Seller")) {
-            usertype = UserType.SELLER;
+            usertype = UserType.Seller;
         }
     }
 

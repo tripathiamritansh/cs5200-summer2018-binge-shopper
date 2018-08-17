@@ -101,15 +101,18 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         switch (item.getItemId()) {
             case R.id.nav_home:
                 navigate(HomeFragment.newInstance());
+                drawerLayout.closeDrawers();
                 return true;
 
             case R.id.login:
                 navigate(LoginFragment.newInstance());
+                drawerLayout.closeDrawers();
                 return true;
 
             case R.id.logout:
                 userManager.saveUser(null);
                 updateNavBar();
+                drawerLayout.closeDrawers();
                 return true;
 
         }
@@ -118,10 +121,10 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
 
     public void updateNavBar() {
 
-        if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.BUYER) {
+        if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.Buyer) {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.drawer_view_logout);
-        } else if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.SELLER) {
+        } else if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.Seller) {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.drawer_view_seller_logout);
         } else {

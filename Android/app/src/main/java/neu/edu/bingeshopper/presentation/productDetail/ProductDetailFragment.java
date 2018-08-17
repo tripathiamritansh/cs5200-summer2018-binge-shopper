@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -38,9 +39,10 @@ public class ProductDetailFragment extends DaggerFragment {
     @Inject
     ViewModelFactory viewModelFactory;
 
+    @Inject
+    neu.edu.bingeshopper.common.UserManager userManager;
+
     private ProductDetailViewModel viewModel;
-//    @Inject
-//    UserManager userManager;
 
     public static ProductDetailFragment newInstance(Product product) {
 
@@ -71,7 +73,13 @@ public class ProductDetailFragment extends DaggerFragment {
 
     private void init() {
         recyclerView = binding.productDetailRecyclerView;
-        adapter = new ProductDetailAdapter();
+        adapter = new ProductDetailAdapter(getFragmentManager(), userManager, getContext(), new ProductDetailFragmentCallBack() {
+            @Override
+            public void OnAddToInventoryClicked(int qty, int price, Product product) {
+                viewModel.addProductToInventory(Objects.requireNonNull(userManager.getUser()).getId(), qty, price, product);
+            }
+        });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         final List<AdapterItem> items = new ArrayList<>();
@@ -85,8 +93,13 @@ public class ProductDetailFragment extends DaggerFragment {
             public void onChanged(@Nullable ProductDetailViewModel.ProductDetailsViewModelResponse productDetailsViewModelResponse) {
                 switch (productDetailsViewModelResponse.getStatus()) {
                     case Success:
-                        items.addAll(productDetailsViewModelResponse.getReviews());
-                        adapter.setData(items);
+                        if (productDetailsViewModelResponse.getReviews() != null) {
+                            items.addAll(productDetailsViewModelResponse.getReviews());
+                            adapter.setData(items);
+                        } else {
+                            Toast.makeText(getContext(), "Product Added in sellers Inventory", Toast.LENGTH_LONG).show();
+                            getFragmentManager().popBackStack();
+                        }
                         break;
                     case Error:
                         Toast.makeText(getContext(), productDetailsViewModelResponse.getMessage(), Toast.LENGTH_LONG).show();
@@ -98,6 +111,10 @@ public class ProductDetailFragment extends DaggerFragment {
         viewModel.getResponseMutableLiveData().observe(this, observer);
         viewModel.fetchReviews(product.getId());
 
+    }
+
+    interface ProductDetailFragmentCallBack {
+        void OnAddToInventoryClicked(int qty, int price, Product product);
     }
 
 

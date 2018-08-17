@@ -1,4 +1,6 @@
 package neu.edu.bingeshopper.presentation.cart;
 
-public class CartViewModel {
+import android.arch.lifecycle.ViewModel;
+
+public class CartViewModel extends ViewModel {
 }

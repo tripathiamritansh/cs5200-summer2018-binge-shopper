@@ -71,7 +71,6 @@ public class ProductRepository extends Repository {
                         String name = item.getName();
                         String description = item.getLongDescription();
                         String imageUrl = "";
-                        String thumbnail = "";
                         if (item != null && item.getImageEntities() != null) {
                             for (ImageEntity imageEntity : item.getImageEntities()) {
                                 if (imageEntity.getEntityType().equals("PRIMARY")) {
@@ -80,13 +79,11 @@ public class ProductRepository extends Repository {
                                         imageUrl = imageEntity.getLargeImage();
                                     } else {
                                         imageUrl = imageEntity.getMediumImage();
-                                    }
-                                    thumbnail = imageEntity.getThumbnailImage();
-                                }
+                                    }                                }
                             }
 
 
-                            products.add(new Product(item.getItemId(), name, description, imageUrl, thumbnail));
+                            products.add(new Product(item.getItemId(), name, description, imageUrl));
                         }
                     }
                     callBack.onSuccess(new ProductRepositoryResponse(products));

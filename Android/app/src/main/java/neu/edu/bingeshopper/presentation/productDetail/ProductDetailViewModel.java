@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import neu.edu.bingeshopper.Repository.InventoryRepository;
+import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.ProductReview;
 import neu.edu.bingeshopper.Repository.Model.Repository;
 import neu.edu.bingeshopper.Repository.ProductRepository;
@@ -17,11 +19,13 @@ public class ProductDetailViewModel extends ViewModel {
     private ProductRepository repository;
     private MutableLiveData<ProductDetailsViewModelResponse> responseMutableLiveData;
     private UserManager userManager;
+    private InventoryRepository inventoryRepository;
 
     @Inject
-    public ProductDetailViewModel(ProductRepository repository, UserManager userManager) {
+    public ProductDetailViewModel(ProductRepository repository, UserManager userManager, InventoryRepository inventoryRepository) {
         this.repository = repository;
         this.userManager = userManager;
+        this.inventoryRepository = inventoryRepository;
     }
 
     public MutableLiveData<ProductDetailsViewModelResponse> getResponseMutableLiveData() {
@@ -47,6 +51,21 @@ public class ProductDetailViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void addProductToInventory(int userId, int qty, int price, Product product) {
+        inventoryRepository.addProductToInventory(userId, qty, price, product, new Repository.RepositoryCallBack<InventoryRepository.InventoryRepositoryResponse>() {
+            @Override
+            public void onSuccess(InventoryRepository.InventoryRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductDetailsViewModelResponse(Status.Success, null, null));
+            }
+
+            @Override
+            public void onError(InventoryRepository.InventoryRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductDetailsViewModelResponse(Status.Error, null, response.getMessage()));
+            }
+
+        });
     }
 
     class ProductDetailsViewModelResponse {

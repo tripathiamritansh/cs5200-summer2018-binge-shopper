@@ -1,4 +1,6 @@
 package neu.edu.bingeshopper.presentation.cart;
 
-public class CartFragment {
+import dagger.android.support.DaggerFragment;
+
+public class CartFragment extends DaggerFragment {
 }

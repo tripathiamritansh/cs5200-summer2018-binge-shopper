@@ -66,8 +66,22 @@
             android:ems="10"
             android:inputType="number"
             android:text="1"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <EditText
+            android:id="@+id/price_edittext"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="0"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/quantity_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/price_heading" />
 
         <TextView
             android:id="@+id/textView4"
@@ -76,8 +90,21 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Enter Quantity"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/product_description" />
+
+        <TextView
+            android:id="@+id/price_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Enter Price"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/price_edittext"
+            app:layout_constraintTop_toBottomOf="@+id/product_description" />
+
 
         <Button
             android:id="@+id/choose_seller_button"
@@ -88,7 +115,23 @@
             android:layout_marginTop="16dp"
             android:text="Choose a seller"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/quantity_edittext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/product_description" />
+
+
+        <Button
+            android:id="@+id/add_to_inventory_button"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Add To Inventory"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/price_edittext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/product_description" />
 
