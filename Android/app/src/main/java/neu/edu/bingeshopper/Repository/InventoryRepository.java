@@ -12,6 +12,7 @@ import neu.edu.bingeshopper.Repository.Model.Inventory;
 import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.Repository;
 import neu.edu.bingeshopper.network.SellerService;
+import neu.edu.bingeshopper.network.WishListService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,9 +22,11 @@ public class InventoryRepository extends Repository {
 
 
     private SellerService sellerService;
+    private WishListService wishListService;
 
     @Inject
     public InventoryRepository(@Named("aws") Retrofit retrofit) {
+        this.wishListService = retrofit.create(WishListService.class);
         this.sellerService = retrofit.create(SellerService.class);
     }
 
@@ -43,6 +46,10 @@ public class InventoryRepository extends Repository {
         public InventoryRepositoryResponse(String message, Inventory inventory) {
             this.message = message;
             this.inventory = inventory;
+        }
+
+        public InventoryRepositoryResponse(String message) {
+            this.message = message;
         }
 
         @Nullable
@@ -67,6 +74,24 @@ public class InventoryRepository extends Repository {
         public void setMessage(@Nullable String message) {
             this.message = message;
         }
+    }
+
+    public void addToWishList(int userId, Product product, final RepositoryCallBack callBack) {
+        wishListService.addToWishList(userId, product).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callBack.onSuccess(new InventoryRepositoryResponse("Product added to wish list"));
+                } else {
+                    callBack.onError(new InventoryRepositoryResponse("Product not added to wish list"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBack.onError(new InventoryRepositoryResponse(t.getMessage()));
+            }
+        });
     }
 
     public void getInventoryForProductWithQuatity(int id, final int qty, final RepositoryCallBack callBack) {

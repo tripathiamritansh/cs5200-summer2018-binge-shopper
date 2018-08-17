@@ -25,6 +25,7 @@ import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.Cart;
 import neu.edu.bingeshopper.Repository.Model.UserType;
 import neu.edu.bingeshopper.common.NavigationUtil;
+import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListFragment;
 import neu.edu.bingeshopper.presentation.cart.CartFragment;
 import neu.edu.bingeshopper.presentation.home.HomeFragment;
 import neu.edu.bingeshopper.presentation.login.LoginFragment;
@@ -129,6 +130,11 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
 
             case R.id.profile:
                 navigate(ProfileFragment.newInstance());
+                drawerLayout.closeDrawers();
+                return true;
+
+            case R.id.wish_list:
+                navigate(ProductLinearListFragment.newInstance(ProductLinearListFragment.CurrentViewType.WISH_LIST));
                 drawerLayout.closeDrawers();
                 return true;
 

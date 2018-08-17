@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,6 +19,16 @@
             app:layout_constraintTop_toTopOf="@id/container"
             app:srcCompat="@android:drawable/dialog_holo_light_frame" />
 
+        <ImageView
+            android:id="@+id/wish_list_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/product_name"
+            app:layout_constraintEnd_toEndOf="@id/container"
+            app:layout_constraintTop_toTopOf="@id/product_name"
+            app:srcCompat="@android:drawable/star_big_on" />
+
         <TextView
             android:id="@+id/product_name"
             android:layout_width="0dp"
@@ -28,7 +38,7 @@
             android:layout_marginTop="16dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/container"
+            app:layout_constraintEnd_toEndOf="@id/wish_list_button"
             app:layout_constraintStart_toStartOf="@id/container"
             app:layout_constraintTop_toBottomOf="@+id/product_image" />
 
