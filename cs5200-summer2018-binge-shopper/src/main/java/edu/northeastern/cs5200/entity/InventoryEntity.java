@@ -16,7 +16,6 @@ public class InventoryEntity {
     private int id;
 
     @Column(name = "date", nullable = false, updatable = false)
-    @CreationTimestamp
     private Date date;
 
     @Column(name = "price")
@@ -44,6 +43,7 @@ public class InventoryEntity {
         this.qty = qty;
         this.seller = seller;
         this.product = product;
+        this.date = new Date();
     }
 
     @Override
@@ -68,10 +68,6 @@ public class InventoryEntity {
 
     public Date getDate() {
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public int getPrice() {
