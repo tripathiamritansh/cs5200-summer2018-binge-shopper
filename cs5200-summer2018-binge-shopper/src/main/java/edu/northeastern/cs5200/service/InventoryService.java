@@ -4,6 +4,7 @@ import edu.northeastern.cs5200.entity.InventoryEntity;
 import edu.northeastern.cs5200.entity.ProductEntity;
 import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.exception.AccessDeniedException;
+import edu.northeastern.cs5200.exception.InvalidPropertyException;
 import edu.northeastern.cs5200.exception.NotFoundException;
 import edu.northeastern.cs5200.repository.InventoryRepository;
 import edu.northeastern.cs5200.repository.ProductRepository;
@@ -36,15 +37,29 @@ public class InventoryService {
             productRepository.save(product);
             pr = product;
         }
-        return inventoryRepository.save(new InventoryEntity(price, qty, seller, pr));
+        InventoryEntity inv = inventoryRepository.findBySellerIdAndProductId(user.getId(), pr.getId());
+        if(inv == null)
+            inv = inventoryRepository.save(new InventoryEntity(price, qty, seller, pr));
+        else{
+            if(qty >= 0)
+                inv.setQty(inv.getQty()+qty);
+            else {
+                throw new InvalidPropertyException("Qty does not have a valud value");
+            }
+        }
+        return inv;
     }
 
     public List<InventoryEntity> getAllSellerForProduct(int productId){
         return inventoryRepository.findByProductId(productId);
     }
 
+    public List<InventoryEntity> getInventoryForSeller(int userId){
+        return inventoryRepository.findBySellerId(userId);
+    }
+
     public InventoryEntity updateInventory(int userId, InventoryEntity inventory){
-        InventoryEntity inv = inventoryRepository.findBySellerId(userId);
+        InventoryEntity inv = inventoryRepository.findById(inventory.getId());
         if(inv == null)
             throw new NotFoundException("Inventory not found for seller");
         inv.setPrice(inventory.getPrice());
@@ -57,7 +72,7 @@ public class InventoryService {
         if(action.equals("add")){
             inv.setQty(inv.getQty() + qty);
         }
-        else if(action.equals("subtract") && (inv.getQty() > 0) && (inv.getQty()-qty >= 0)) {
+        else if(action.equals("subtract") && (inv.getQty() > 0) && (inv.getQty()- qty >= 0)) {
             inv.setQty(inv.getQty() - qty);
         }
         else{

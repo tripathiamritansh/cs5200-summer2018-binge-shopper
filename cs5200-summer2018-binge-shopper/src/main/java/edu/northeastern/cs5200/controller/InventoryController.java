@@ -35,6 +35,11 @@ public class InventoryController {
         return inventoryService.getAllSellerForProduct(productId);
     }
 
+    @GetMapping("user/{userId}/getInventory")
+    public List<InventoryEntity> getInventoryForSeller(@PathVariable int userId){
+        return inventoryService.getInventoryForSeller(userId);
+    }
+
     @PostMapping("user/{userId}/update")
     public InventoryEntity updateProductInSellerInventory(@PathVariable int userId, @RequestBody InventoryEntity inventory, HttpSession session){
         return inventoryService.updateInventory(userId, inventory);

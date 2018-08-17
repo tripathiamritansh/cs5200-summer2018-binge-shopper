@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface InventoryRepository extends CrudRepository<InventoryEntity, Integer> {
 
-    InventoryEntity findBySellerId(int userId);
+    InventoryEntity findById(int userId);
+
+    List<InventoryEntity> findBySellerId(int userId);
 
     InventoryEntity findBySellerIdAndProductId(int userId, int productId);
 
