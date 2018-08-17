@@ -15,7 +15,6 @@ public class OrderEntity {
     @Column(name = "id")
     private int id;
     @Column(name = "date", nullable = false, updatable = false)
-    @UpdateTimestamp
     private Date date;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -37,6 +36,7 @@ public class OrderEntity {
 
     public OrderEntity(UserEntity buyer) {
         this.buyer = buyer;
+        this.date = new Date();
     }
 
     public int getId() {
@@ -49,10 +49,6 @@ public class OrderEntity {
 
     public Date getDate() {
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public UserEntity getBuyer() {

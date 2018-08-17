@@ -52,6 +52,20 @@ public class InventoryService {
         return inventoryRepository.save(inv);
     }
 
+    public InventoryEntity updateProductQtyForSeller(int sellerId, int productId, int qty, String action){
+        InventoryEntity inv = inventoryRepository.findBySellerIdAndProductId(sellerId, productId);
+        if(action.equals("add")){
+            inv.setQty(inv.getQty() + qty);
+        }
+        else if(action.equals("subtract") && (inv.getQty() > 0) && (inv.getQty()-qty >= 0)) {
+            inv.setQty(inv.getQty() - qty);
+        }
+        else{
+            throw new NotFoundException("Action does not match add or delete products");
+        }
+        return inv;
+    }
+
     public void deleteInventory(int inventoryId){
         inventoryRepository.deleteById(inventoryId);
     }

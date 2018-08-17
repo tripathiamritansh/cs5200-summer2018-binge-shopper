@@ -1,10 +1,12 @@
 package edu.northeastern.cs5200.service;
 
+import edu.northeastern.cs5200.entity.InventoryEntity;
 import edu.northeastern.cs5200.entity.OrderEntity;
 import edu.northeastern.cs5200.entity.TransactionEntity;
 import edu.northeastern.cs5200.entity.UserEntity;
 import edu.northeastern.cs5200.exception.AuthenticationException;
 import edu.northeastern.cs5200.exception.NotFoundException;
+import edu.northeastern.cs5200.repository.InventoryRepository;
 import edu.northeastern.cs5200.repository.OrderRepository;
 import edu.northeastern.cs5200.repository.TransactionRepository;
 import edu.northeastern.cs5200.repository.UserRepository;
@@ -28,7 +30,13 @@ public class OrderService {
     private TransactionRepository transactionRepository;
 
     @Autowired
+    private InventoryRepository inventoryRepository;
+
+    @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private InventoryService inventoryService;
 
     public OrderEntity addOrderForBuyer(int userId, List<OrderTranscationWrapper> transactions){
         UserEntity user = userRepository.findById(userId);
@@ -40,6 +48,7 @@ public class OrderService {
             int sellerId = t.getSellerId();
             int qty = t.getQty();
             transactionService.addTransaction(order.getId(), sellerId, productId, qty);
+            inventoryService.updateProductQtyForSeller(sellerId, productId, qty, "subtract");
         }
         return order;
     }
@@ -60,15 +69,24 @@ public class OrderService {
         for(OrderTranscationWrapper t: transactions){
             int productId = t.getProductId();
             int sellerId = t.getSellerId();
-            int qty = t.getQty();
+            int qtyCurrent = t.getQty();
             TransactionEntity transaction = transactionRepository.findByOrderIdAndProductId(orderId, productId);
+            int qtyPrevious = transaction.getQty();
+            int diff = qtyCurrent - qtyPrevious;
             if(transaction == null)
                 throw new NotFoundException("Transaction not found for given order and product");
             if(!userRepository.findById(sellerId).getUserType().equals("Seller"))
                 throw new AuthenticationException("User not a seller of product");
             transaction.setSeller(userRepository.findById(sellerId));
-            transaction.setQty(qty);
+            transaction.setQty(qtyCurrent);
             transactionRepository.save(transaction);
+            if(diff < 0){
+                inventoryService.updateProductQtyForSeller(sellerId, productId, diff, "add");
+            }
+            else{
+                inventoryService.updateProductQtyForSeller(sellerId, productId, diff, "subtract");
+            }
+
         }
         return order;
     }
@@ -80,7 +98,10 @@ public class OrderService {
         for(ProductsWrapper product: products){
             int productId = product.getProductId();
             TransactionEntity transaction = transactionRepository.findByOrderIdAndProductId(orderId, productId);
+            int sellerId = transaction.getSeller().getId();
+            int qty = transaction.getQty();
             transactionRepository.delete(transaction);
+            inventoryService.updateProductQtyForSeller(sellerId, productId, qty, "add");
         }
     }
 
