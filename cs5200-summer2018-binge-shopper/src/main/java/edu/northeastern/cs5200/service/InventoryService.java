@@ -47,7 +47,7 @@ public class InventoryService {
                 throw new InvalidPropertyException("Qty does not have a valud value");
             }
         }
-        return inv;
+        return inventoryRepository.save(inv);
     }
 
     public List<InventoryEntity> getAllSellerForProduct(int productId){
