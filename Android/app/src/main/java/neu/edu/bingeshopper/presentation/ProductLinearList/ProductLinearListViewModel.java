@@ -9,15 +9,18 @@ import javax.inject.Inject;
 
 import neu.edu.bingeshopper.Repository.LinearListRepository;
 import neu.edu.bingeshopper.Repository.Model.Repository;
+import neu.edu.bingeshopper.Repository.ReviewRepository;
 
 public class ProductLinearListViewModel extends ViewModel {
 
     private LinearListRepository repository;
     private MutableLiveData<ProductLinearListViewModelResponse> responseMutableLiveData;
+    private ReviewRepository reviewRepository;
 
     @Inject
-    public ProductLinearListViewModel(LinearListRepository repository) {
+    public ProductLinearListViewModel(LinearListRepository repository, ReviewRepository reviewRepository) {
         this.repository = repository;
+        this.reviewRepository = reviewRepository;
     }
 
     public MutableLiveData<ProductLinearListViewModelResponse> getResponseMutableLiveData() {
@@ -121,6 +124,35 @@ public class ProductLinearListViewModel extends ViewModel {
         public void setMessage(String message) {
             this.message = message;
         }
+    }
+
+
+    public void postSellerReview(int buyerId, int sellerId, String review) {
+        reviewRepository.postSeller(buyerId, sellerId, review, new Repository.RepositoryCallBack<String>() {
+            @Override
+            public void onSuccess(String response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response));
+            }
+
+            @Override
+            public void onError(String response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response));
+            }
+        });
+    }
+
+    public void postProductReview(int buyerId, int productId, String review) {
+        reviewRepository.postProduct(buyerId, productId, review, new Repository.RepositoryCallBack<String>() {
+            @Override
+            public void onSuccess(String response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response));
+            }
+
+            @Override
+            public void onError(String response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response));
+            }
+        });
     }
 
     enum Status {

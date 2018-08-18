@@ -22,8 +22,10 @@ import neu.edu.bingeshopper.Repository.Model.CartItem;
 import neu.edu.bingeshopper.Repository.Model.Inventory;
 import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.User;
+import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.databinding.FragmentSellerListBinding;
 import neu.edu.bingeshopper.presentation.ViewModelFactory;
+import neu.edu.bingeshopper.presentation.reviews.ReviewsFragment;
 
 public class SellerListFragment extends DaggerFragment {
 
@@ -120,7 +122,10 @@ public class SellerListFragment extends DaggerFragment {
 
             @Override
             public void onShowSellerReviewsClicked(int sellerId) {
-                //TODO:Navigate
+
+                ReviewsFragment fragment = ReviewsFragment.newInstance(ReviewsFragment.ReviewListType.SellerReviews, sellerId);
+                NavigationUtil.navigate(fragment, getFragmentManager().beginTransaction(), R.id.content_frame);
+
             }
         });
 

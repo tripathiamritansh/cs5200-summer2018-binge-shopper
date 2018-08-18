@@ -12,6 +12,7 @@ import neu.edu.bingeshopper.presentation.login.LoginViewModel;
 import neu.edu.bingeshopper.presentation.productDetail.ProductDetailViewModel;
 import neu.edu.bingeshopper.presentation.productList.ProductListViewModel;
 import neu.edu.bingeshopper.presentation.profile.ProfileViewModel;
+import neu.edu.bingeshopper.presentation.reviews.ReviewListViewModel;
 import neu.edu.bingeshopper.presentation.signup.SignUpViewModel;
 
 @Module
@@ -59,5 +60,10 @@ public abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(ProductLinearListViewModel.class)
     abstract ViewModel bindProductLinearListViewModel(ProductLinearListViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReviewListViewModel.class)
+    abstract ViewModel bindReviewListViewModel(ReviewListViewModel viewModel);
 
 }

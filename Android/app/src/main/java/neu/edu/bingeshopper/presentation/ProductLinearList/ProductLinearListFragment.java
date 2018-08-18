@@ -1,5 +1,6 @@
 package neu.edu.bingeshopper.presentation.ProductLinearList;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -8,9 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -105,12 +108,12 @@ public class ProductLinearListFragment extends DaggerFragment {
 
             @Override
             public void OnWriteSellerReviewClicked(User seller) {
-
+                navigateToSellerDialog(seller);
             }
 
             @Override
             public void OnWriteProductReviewClicked(Product product) {
-
+                navigateToProductDialog(product);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -134,6 +137,41 @@ public class ProductLinearListFragment extends DaggerFragment {
 
     }
 
+    private void navigateToSellerDialog(final User seller) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(R.layout.dialog_review_post);
+        final AlertDialog dailog = builder.create();
+
+        dailog.show();
+        dailog.findViewById(R.id.share_post_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ShareDialog", "ButtonClicked");
+                viewModel.postSellerReview(userManager.getUser().getId(), seller.getId(), ((EditText) dailog.findViewById(R.id.message_edittext)).getText().toString());
+                dailog.dismiss();
+            }
+        });
+
+    }
+
+    private void navigateToProductDialog(final Product product) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(R.layout.dialog_review_post);
+        final AlertDialog dailog = builder.create();
+
+        dailog.show();
+        dailog.findViewById(R.id.share_post_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ShareDialog", "ButtonClicked");
+                viewModel.postProductReview(userManager.getUser().getId(), product.getId(), ((EditText) dailog.findViewById(R.id.message_edittext)).getText().toString());
+                dailog.dismiss();
+
+            }
+        });
+
+    }
+
     private void initialiseTransactionList() {
 
         Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse> observer = new Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse>() {
@@ -142,7 +180,10 @@ public class ProductLinearListFragment extends DaggerFragment {
                 binding.progressBar.setVisibility(View.GONE);
                 switch (productLinearListViewModelResponse.getStatus()) {
                     case Success:
-                        if (productLinearListViewModelResponse.getData().isEmpty()) {
+                        if (productLinearListViewModelResponse.getData() == null) {
+                            Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        } else if (productLinearListViewModelResponse.getData().isEmpty()) {
                             binding.emptyState.setVisibility(View.VISIBLE);
                             binding.linearListRecyclerview.setVisibility(View.GONE);
                             binding.emptyState.setText("No transaction found");
