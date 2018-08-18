@@ -192,6 +192,7 @@ public class ProductLinearListFragment extends DaggerFragment {
                             binding.linearListRecyclerview.setVisibility(View.VISIBLE);
                             adapter.setData(productLinearListViewModelResponse.getData());
                         }
+                        break;
                     case Error:
                         Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         break;
@@ -218,6 +219,7 @@ public class ProductLinearListFragment extends DaggerFragment {
                             binding.linearListRecyclerview.setVisibility(View.VISIBLE);
                             adapter.setData(productLinearListViewModelResponse.getData());
                         }
+                        break;
                     case Error:
                         Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         break;
@@ -244,6 +246,7 @@ public class ProductLinearListFragment extends DaggerFragment {
                             binding.linearListRecyclerview.setVisibility(View.VISIBLE);
                             adapter.setData(productLinearListViewModelResponse.getData());
                         }
+                        break;
                     case Error:
                         Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         break;
