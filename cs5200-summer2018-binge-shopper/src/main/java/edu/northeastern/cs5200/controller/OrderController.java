@@ -21,7 +21,7 @@ public class OrderController {
         return orderService.addOrderForBuyer(userId, transactions);
     }
 
-    @GetMapping("get")
+    @GetMapping("user/{userId}/getOrder")
     public List<OrderEntity> getOrderByBuyer(@PathVariable int userId){
         return orderService.getOrderByBuyer(userId);
     }
