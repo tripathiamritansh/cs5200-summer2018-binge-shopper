@@ -12,18 +12,19 @@ public class ProductReviewEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-    @Column(name = "review")
+    @Lob
+    @Column(length = 1000000)
     private String review;
     @Column(name = "rating")
     private Float rating;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(optional = false, fetch=FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "product_review_association"))
     private ProductEntity product;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @ManyToOne(optional = false, fetch=FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "reviewer_review_association"))
     private UserEntity reviewer;
 

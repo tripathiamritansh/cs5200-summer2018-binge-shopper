@@ -12,7 +12,8 @@ public class SellerReviewEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-    @Column(name = "review")
+    @Lob
+    @Column(length = 1000000)
     private String review;
     @Column(name = "rating")
     private Float rating;
