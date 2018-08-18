@@ -16,8 +16,10 @@ import java.util.List;
 
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.Order;
+import neu.edu.bingeshopper.Repository.Model.Transaction;
 import neu.edu.bingeshopper.databinding.ItemInventoryListBinding;
 import neu.edu.bingeshopper.databinding.ItemOrderHistoryBinding;
+import neu.edu.bingeshopper.databinding.ItemTransactionListBinding;
 import neu.edu.bingeshopper.databinding.ItemWishListBinding;
 
 public class ProductLinearListAdapter extends RecyclerView.Adapter {
@@ -54,6 +56,9 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
             case ORDER_HISTORY:
                 ItemOrderHistoryBinding orderHistoryBinding = DataBindingUtil.inflate(inflater, R.layout.item_order_history, parent, false);
                 return new OrderHistoryViewHolder(orderHistoryBinding);
+            case ORDER_TRANSACTION:
+                ItemTransactionListBinding itemTransactionListBinding = DataBindingUtil.inflate(inflater, R.layout.item_transaction_list, parent, false);
+                return new TransactionListViewHolder(itemTransactionListBinding);
         }
         return null;
     }
@@ -73,6 +78,10 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
                 OrderHistoryViewHolder orderHistoryViewHolder = (OrderHistoryViewHolder) holder;
                 orderHistoryViewHolder.bind(position);
                 break;
+            case ORDER_TRANSACTION:
+                TransactionListViewHolder transactionListViewHolder = (TransactionListViewHolder) holder;
+                transactionListViewHolder.bind(position);
+                break;
 
         }
     }
@@ -80,6 +89,35 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public class TransactionListViewHolder extends RecyclerView.ViewHolder {
+        ItemTransactionListBinding binding;
+
+        public TransactionListViewHolder(ItemTransactionListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(int pos) {
+            final Transaction transaction = data.get(pos).getTransaction();
+            Picasso.get().load(transaction.getProduct().getImage_url()).into(binding.productImage);
+            binding.productName.setText(transaction.getProduct().getName());
+            binding.button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callBack.OnWriteSellerReviewClicked(transaction.getSeller());
+                }
+            });
+
+            binding.button3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callBack.OnWriteProductReviewClicked(transaction.getProduct());
+                }
+            });
+            binding.executePendingBindings();
+        }
     }
 
     public class WishListViewHolder extends RecyclerView.ViewHolder {
@@ -113,7 +151,7 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
         }
 
         void bind(int pos) {
-            Order order = data.get(pos).getOrder();
+            final Order order = data.get(pos).getOrder();
             Calendar cal = Calendar.getInstance();
             cal.setTime(order.getDate());
             SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
@@ -121,7 +159,7 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
             orderHistoryBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    callBack.onOrderClicked(order.getId());
                 }
             });
             orderHistoryBinding.executePendingBindings();

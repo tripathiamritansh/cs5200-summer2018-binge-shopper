@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.Product;
+import neu.edu.bingeshopper.Repository.Model.User;
 import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.common.UserManager;
 import neu.edu.bingeshopper.databinding.FragmentLinearListBinding;
@@ -27,11 +28,13 @@ import neu.edu.bingeshopper.presentation.productDetail.ProductDetailFragment;
 public class ProductLinearListFragment extends DaggerFragment {
 
     private static String VIEW_TYPE = "ViewType";
+    private static String ORDER_ID = "orderId";
     private CurrentViewType currentViewType;
     private FragmentLinearListBinding binding;
     private RecyclerView recyclerView;
     private ProductLinearListViewModel viewModel;
     private ProductLinearListAdapter adapter;
+    private int orderId;
 
     @Inject
     UserManager userManager;
@@ -49,12 +52,24 @@ public class ProductLinearListFragment extends DaggerFragment {
 
     }
 
+    public static ProductLinearListFragment newInstance(CurrentViewType viewType, int orderId) {
+
+        Bundle args = new Bundle();
+        args.putSerializable(VIEW_TYPE, viewType);
+        args.putInt(ORDER_ID, orderId);
+        ProductLinearListFragment fragment = new ProductLinearListFragment();
+        fragment.setArguments(args);
+        return fragment;
+
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentViewType = (CurrentViewType) getArguments().getSerializable(VIEW_TYPE);
+            orderId = getArguments().getInt(ORDER_ID);
         }
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductLinearListViewModel.class);
 
@@ -84,8 +99,18 @@ public class ProductLinearListFragment extends DaggerFragment {
 
             @Override
             public void onOrderClicked(int orderId) {
-                ProductLinearListFragment fragment = ProductLinearListFragment.newInstance(CurrentViewType.ORDER_TRANSACTION);
+                ProductLinearListFragment fragment = ProductLinearListFragment.newInstance(CurrentViewType.ORDER_TRANSACTION, orderId);
                 NavigationUtil.navigate(fragment, getFragmentManager().beginTransaction(), R.id.content_frame);
+            }
+
+            @Override
+            public void OnWriteSellerReviewClicked(User seller) {
+
+            }
+
+            @Override
+            public void OnWriteProductReviewClicked(Product product) {
+
             }
         });
         recyclerView.setAdapter(adapter);
@@ -102,8 +127,38 @@ public class ProductLinearListFragment extends DaggerFragment {
             case INVENTORY_LIST:
                 initialiseInventoryView();
                 break;
+            case ORDER_TRANSACTION:
+                initialiseTransactionList();
+                break;
         }
 
+    }
+
+    private void initialiseTransactionList() {
+
+        Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse> observer = new Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse>() {
+            @Override
+            public void onChanged(@Nullable ProductLinearListViewModel.ProductLinearListViewModelResponse productLinearListViewModelResponse) {
+                binding.progressBar.setVisibility(View.GONE);
+                switch (productLinearListViewModelResponse.getStatus()) {
+                    case Success:
+                        if (productLinearListViewModelResponse.getData().isEmpty()) {
+                            binding.emptyState.setVisibility(View.VISIBLE);
+                            binding.linearListRecyclerview.setVisibility(View.GONE);
+                            binding.emptyState.setText("No transaction found");
+                        } else {
+                            binding.emptyState.setVisibility(View.GONE);
+                            binding.linearListRecyclerview.setVisibility(View.VISIBLE);
+                            adapter.setData(productLinearListViewModelResponse.getData());
+                        }
+                    case Error:
+                        Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+        viewModel.getResponseMutableLiveData().observe(this, observer);
+        viewModel.getTransactionList(orderId);
     }
 
     private void initialiseOrderHistory() {
@@ -202,6 +257,10 @@ public class ProductLinearListFragment extends DaggerFragment {
         void onDeleteFromInventoryClicked(int inventoryId);
 
         void onOrderClicked(int orderId);
+
+        void OnWriteSellerReviewClicked(User seller);
+
+        void OnWriteProductReviewClicked(Product product);
     }
 
 }

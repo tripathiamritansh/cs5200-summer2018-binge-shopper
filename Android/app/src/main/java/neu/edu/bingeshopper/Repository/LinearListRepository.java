@@ -11,9 +11,11 @@ import javax.inject.Named;
 import neu.edu.bingeshopper.Repository.Model.Inventory;
 import neu.edu.bingeshopper.Repository.Model.Order;
 import neu.edu.bingeshopper.Repository.Model.Repository;
+import neu.edu.bingeshopper.Repository.Model.Transaction;
 import neu.edu.bingeshopper.Repository.Model.WishList;
 import neu.edu.bingeshopper.network.InventoryService;
 import neu.edu.bingeshopper.network.OrderService;
+import neu.edu.bingeshopper.network.TransactionService;
 import neu.edu.bingeshopper.network.WishListService;
 import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListModel;
 import retrofit2.Call;
@@ -26,12 +28,16 @@ public class LinearListRepository {
     private InventoryService inventoryService;
     private WishListService wishListService;
     private OrderService orderService;
+    private TransactionService transactionService;
 
     @Inject
     public LinearListRepository(@Named("aws") Retrofit retrofit) {
+
         wishListService = retrofit.create(WishListService.class);
         inventoryService = retrofit.create(InventoryService.class);
         orderService = retrofit.create(OrderService.class);
+        transactionService = retrofit.create(TransactionService.class);
+
     }
 
 
@@ -71,6 +77,29 @@ public class LinearListRepository {
         }
     }
 
+    public void getTransactionForOrder(int orderId, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {
+        transactionService.getTransactionsForOrder(orderId).enqueue(new Callback<List<Transaction>>() {
+            @Override
+            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+                if (response.isSuccessful()) {
+                    List<ProductLinearListModel> modelList = new ArrayList<>();
+                    for (Transaction transaction : response.body()) {
+                        ProductLinearListModel model = new ProductLinearListModel();
+                        model.setTransaction(transaction);
+                        modelList.add(model);
+                    }
+                    callBack.onSuccess(new LinearListRepositoryResponse(modelList));
+                } else {
+                    callBack.onError(new LinearListRepositoryResponse("Error fetching the transaction list"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Transaction>> call, Throwable t) {
+                callBack.onError(new LinearListRepositoryResponse(t.getMessage()));
+            }
+        });
+    }
 
     public void getOrderList(int userId, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {
         orderService.getOrders(userId).enqueue(new Callback<List<Order>>() {

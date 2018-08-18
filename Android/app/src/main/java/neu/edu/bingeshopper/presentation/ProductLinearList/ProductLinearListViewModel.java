@@ -41,6 +41,20 @@ public class ProductLinearListViewModel extends ViewModel {
         });
     }
 
+    public void getTransactionList(int orderId) {
+        repository.getTransactionForOrder(orderId, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
+            @Override
+            public void onSuccess(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response.getData()));
+            }
+
+            @Override
+            public void onError(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response.getMessage()));
+            }
+        });
+    }
+
     public void getWishList(int userId) {
         repository.getUserWishList(userId, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
             @Override

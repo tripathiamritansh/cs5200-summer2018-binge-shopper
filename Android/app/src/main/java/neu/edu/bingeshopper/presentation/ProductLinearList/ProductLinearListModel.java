@@ -3,6 +3,7 @@ package neu.edu.bingeshopper.presentation.ProductLinearList;
 import neu.edu.bingeshopper.Repository.Model.Inventory;
 import neu.edu.bingeshopper.Repository.Model.Order;
 import neu.edu.bingeshopper.Repository.Model.Product;
+import neu.edu.bingeshopper.Repository.Model.Transaction;
 import neu.edu.bingeshopper.Repository.Model.User;
 
 public class ProductLinearListModel {
@@ -12,6 +13,7 @@ public class ProductLinearListModel {
     private int price;
     private Order order;
     private Inventory inventory;
+    private Transaction transaction;
 
     public ProductLinearListModel(Product product, User seller, int qty, int price) {
         this.product = product;
@@ -22,6 +24,14 @@ public class ProductLinearListModel {
 
 
     public ProductLinearListModel() {
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 
     public Inventory getInventory() {
