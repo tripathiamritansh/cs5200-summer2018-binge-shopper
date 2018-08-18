@@ -24,9 +24,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/product_name"
             app:layout_constraintEnd_toEndOf="@id/container"
             app:layout_constraintTop_toTopOf="@id/product_name"
+
             app:srcCompat="@android:drawable/star_big_on" />
 
         <TextView

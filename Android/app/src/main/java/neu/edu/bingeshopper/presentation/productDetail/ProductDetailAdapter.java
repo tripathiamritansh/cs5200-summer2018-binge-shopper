@@ -131,6 +131,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter {
                 binding.chooseSellerButton.setVisibility(View.VISIBLE);
                 binding.quantityEdittext.setVisibility(View.VISIBLE);
                 binding.textView4.setVisibility(View.VISIBLE);
+                binding.wishListButton.setVisibility(View.VISIBLE);
 
                 binding.chooseSellerButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -139,18 +140,18 @@ public class ProductDetailAdapter extends RecyclerView.Adapter {
                         NavigationUtil.navigate(fragment, fragmentManager.beginTransaction(), R.id.content_frame);
                     }
                 });
+                binding.wishListButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callBack.OnAddToWishListClicked((Product) data.get(pos));
+                    }
+                });
 
             }
 
             Picasso.get().load(product.getImage_url()).into(binding.productImage);
             binding.productName.setText(product.getName());
             binding.productDescription.setText(product.getDescription());
-            binding.wishListButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callBack.OnAddToWishListClicked((Product) data.get(pos));
-                }
-            });
             binding.executePendingBindings();
         }
     }
