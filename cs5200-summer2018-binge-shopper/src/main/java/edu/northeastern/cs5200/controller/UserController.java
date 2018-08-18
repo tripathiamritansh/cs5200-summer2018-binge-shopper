@@ -50,20 +50,14 @@ public class UserController {
         u.setPassword(BCrypt.hashpw(u.getPassword(), BCrypt.gensalt()));
         UserEntity user = userService.addUser(u);
 
-//        if((user.getUserType().equals("Buyer") || user.getUserType().equals("Seller")) && user.getApproved() ==
-// false){
-//            throw new AccessDeniedException(new Throwable("User registered successfully| Needs to be approved by
-// Admin!"));
-//        }
-
         session.setAttribute("user_session", user);
         session.setMaxInactiveInterval(300);
         return user;
     }
 
     @GetMapping("getAll")
-    public List<UserEntity> getAllUsers(HttpSession session){
-        return userService.findAllUsers();
+    public List<UserEntity> getAllUsersExceptAdmin(HttpSession session){
+        return userService.findAllUsersExceptAdmin();
     }
 
     @PutMapping("{userId}/approve/{status}")

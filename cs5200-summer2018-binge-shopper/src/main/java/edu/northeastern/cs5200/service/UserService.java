@@ -23,8 +23,10 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public List<UserEntity> findAllUsers() {
-        return (List<UserEntity>) userRepository.findAll();
+    public List<UserEntity> findAllUsersExceptAdmin() {
+        List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
+        users.remove(userRepository.findByUserType("Admin").get(0));
+        return users;
     }
 
     public UserEntity updateApproveUser(int userId, boolean status) {
