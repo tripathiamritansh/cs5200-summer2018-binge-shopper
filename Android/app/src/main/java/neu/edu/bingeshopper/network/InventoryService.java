@@ -1,4 +1,14 @@
 package neu.edu.bingeshopper.network;
 
-public class InventoryService {
+import java.util.List;
+
+import neu.edu.bingeshopper.Repository.Model.Inventory;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
+public interface InventoryService {
+
+    @GET("api/inventory/user/{userId}/getInventory")
+    Call<List<Inventory>> getInventory(@Path("userId") int userId);
 }

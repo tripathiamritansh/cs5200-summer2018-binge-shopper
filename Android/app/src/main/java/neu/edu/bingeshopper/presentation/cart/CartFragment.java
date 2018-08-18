@@ -73,9 +73,10 @@ public class CartFragment extends DaggerFragment {
         Observer<CartViewModel.CartViewModelResponse> observer = new Observer<CartViewModel.CartViewModelResponse>() {
             @Override
             public void onChanged(@Nullable CartViewModel.CartViewModelResponse cartViewModelResponse) {
-                Toast.makeText(getContext(), cartViewModelResponse.getMessage(), Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), cartViewModelResponse.getMessage(), Toast.LENGTH_LONG).show();
                 switch (cartViewModelResponse.getStatus()) {
                     case Success:
+                        cart.clearCart();
                         getFragmentManager().popBackStack();
                         break;
                     case Error:
@@ -106,9 +107,10 @@ public class CartFragment extends DaggerFragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
     }
 
-    private void updateView(FragmentCartBinding binding, @Nullable List<CartItem> cartItems) {
+    private void updateView(final FragmentCartBinding binding, @Nullable List<CartItem> cartItems) {
         if (Objects.requireNonNull(cartItems).isEmpty()) {
             binding.group.setVisibility(View.GONE);
             binding.emptyState.setVisibility(View.VISIBLE);
@@ -119,6 +121,8 @@ public class CartFragment extends DaggerFragment {
             binding.placeOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    binding.group.setVisibility(View.GONE);
+//                    binding.
                     viewModel.placeOrder(userManager.getUser().getId(), cart.getCartItems());
                 }
             });

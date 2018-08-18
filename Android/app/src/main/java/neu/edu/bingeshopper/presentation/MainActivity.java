@@ -138,6 +138,15 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
                 drawerLayout.closeDrawers();
                 return true;
 
+            case R.id.inventory:
+                navigate(ProductLinearListFragment.newInstance(ProductLinearListFragment.CurrentViewType.INVENTORY_LIST));
+                drawerLayout.closeDrawers();
+                return true;
+
+            case R.id.order_history:
+                navigate(ProductLinearListFragment.newInstance(ProductLinearListFragment.CurrentViewType.ORDER_HISTORY));
+                drawerLayout.closeDrawers();
+                return true;
             case R.id.cart:
                 navigate(CartFragment.newInstance());
                 drawerLayout.closeDrawers();

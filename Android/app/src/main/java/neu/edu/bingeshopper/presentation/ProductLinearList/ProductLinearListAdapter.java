@@ -9,10 +9,15 @@ import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import neu.edu.bingeshopper.R;
+import neu.edu.bingeshopper.Repository.Model.Order;
+import neu.edu.bingeshopper.databinding.ItemInventoryListBinding;
+import neu.edu.bingeshopper.databinding.ItemOrderHistoryBinding;
 import neu.edu.bingeshopper.databinding.ItemWishListBinding;
 
 public class ProductLinearListAdapter extends RecyclerView.Adapter {
@@ -42,7 +47,13 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
             case WISH_LIST:
                 ItemWishListBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_wish_list, parent, false);
                 return new WishListViewHolder(binding);
+            case INVENTORY_LIST:
+                ItemInventoryListBinding itemInventoryListBinding = DataBindingUtil.inflate(inflater, R.layout.item_inventory_list, parent, false);
+                return new InventoryViewHolder(itemInventoryListBinding);
 
+            case ORDER_HISTORY:
+                ItemOrderHistoryBinding orderHistoryBinding = DataBindingUtil.inflate(inflater, R.layout.item_order_history, parent, false);
+                return new OrderHistoryViewHolder(orderHistoryBinding);
         }
         return null;
     }
@@ -53,6 +64,16 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
             case WISH_LIST:
                 WishListViewHolder viewHolder = (WishListViewHolder) holder;
                 viewHolder.bind(position);
+                break;
+            case INVENTORY_LIST:
+                InventoryViewHolder inventoryViewHolder = (InventoryViewHolder) holder;
+                inventoryViewHolder.bind(position);
+                break;
+            case ORDER_HISTORY:
+                OrderHistoryViewHolder orderHistoryViewHolder = (OrderHistoryViewHolder) holder;
+                orderHistoryViewHolder.bind(position);
+                break;
+
         }
     }
 
@@ -79,6 +100,54 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
             });
             Picasso.get().load(data.get(pos).getProduct().getImage_url()).into(binding.productImage);
             binding.productName.setText(data.get(pos).getProduct().getName());
+            binding.executePendingBindings();
+        }
+    }
+
+    public class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
+        private ItemOrderHistoryBinding orderHistoryBinding;
+
+        public OrderHistoryViewHolder(ItemOrderHistoryBinding orderHistoryBinding) {
+            super(orderHistoryBinding.getRoot());
+            this.orderHistoryBinding = orderHistoryBinding;
+        }
+
+        void bind(int pos) {
+            Order order = data.get(pos).getOrder();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(order.getDate());
+            SimpleDateFormat dateOnly = new SimpleDateFormat("MM/dd/yyyy");
+            orderHistoryBinding.orderDate.setText("Order date :" + dateOnly.format(order.getDate()));
+            orderHistoryBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            orderHistoryBinding.executePendingBindings();
+        }
+    }
+
+    public class InventoryViewHolder extends RecyclerView.ViewHolder {
+
+        ItemInventoryListBinding binding;
+
+        public InventoryViewHolder(ItemInventoryListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(int pos) {
+            Picasso.get().load(data.get(pos).getInventory().getProduct().getImage_url()).into(binding.productImage);
+            binding.productName.setText(data.get(pos).getInventory().getProduct().getName());
+            binding.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            binding.productPrice.setText("$" + data.get(pos).getInventory().getPrice());
+            binding.textView.setText("Quantity :" + data.get(pos).getInventory().getQty());
             binding.executePendingBindings();
         }
     }

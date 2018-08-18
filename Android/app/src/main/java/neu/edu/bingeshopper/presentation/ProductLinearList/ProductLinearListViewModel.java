@@ -27,8 +27,36 @@ public class ProductLinearListViewModel extends ViewModel {
         return responseMutableLiveData;
     }
 
+    public void getSellerInventory(int userId) {
+        repository.getSellerInventory(userId, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
+            @Override
+            public void onSuccess(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response.getData()));
+            }
+
+            @Override
+            public void onError(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response.getMessage()));
+            }
+        });
+    }
+
     public void getWishList(int userId) {
         repository.getUserWishList(userId, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
+            @Override
+            public void onSuccess(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response.getData()));
+            }
+
+            @Override
+            public void onError(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response.getMessage()));
+            }
+        });
+    }
+
+    public void getOrderList(int userId) {
+        repository.getOrderList(userId, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
             @Override
             public void onSuccess(LinearListRepository.LinearListRepositoryResponse response) {
                 responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response.getData()));

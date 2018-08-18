@@ -67,13 +67,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             binding.productPrice.setText("$" + data.get(pos).getInventory().getPrice());
             binding.textView.setText("Quantity :" + String.valueOf(data.get(pos).getQty()));
             binding.sellerName.setText("Seller :" + data.get(pos).getSeller().getUsername());
-            binding.executePendingBindings();
+
             binding.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     cartFragmentCallback.onDeleteClicked(data.get(pos));
                 }
             });
+            binding.executePendingBindings();
         }
     }
 }

@@ -11,6 +11,7 @@ import javax.inject.Named;
 import neu.edu.bingeshopper.Repository.Model.Inventory;
 import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.Repository;
+import neu.edu.bingeshopper.network.InventoryService;
 import neu.edu.bingeshopper.network.SellerService;
 import neu.edu.bingeshopper.network.WishListService;
 import retrofit2.Call;
@@ -117,6 +118,7 @@ public class InventoryRepository extends Repository {
             }
         });
     }
+
 
     public void addProductToInventory(int userId, int qty, int price, Product product, final RepositoryCallBack callBack) {
 

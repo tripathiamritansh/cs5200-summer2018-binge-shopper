@@ -8,8 +8,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import neu.edu.bingeshopper.Repository.Model.Inventory;
+import neu.edu.bingeshopper.Repository.Model.Order;
 import neu.edu.bingeshopper.Repository.Model.Repository;
 import neu.edu.bingeshopper.Repository.Model.WishList;
+import neu.edu.bingeshopper.network.InventoryService;
+import neu.edu.bingeshopper.network.OrderService;
 import neu.edu.bingeshopper.network.WishListService;
 import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListModel;
 import retrofit2.Call;
@@ -19,11 +23,15 @@ import retrofit2.Retrofit;
 
 public class LinearListRepository {
 
+    private InventoryService inventoryService;
     private WishListService wishListService;
+    private OrderService orderService;
 
     @Inject
     public LinearListRepository(@Named("aws") Retrofit retrofit) {
         wishListService = retrofit.create(WishListService.class);
+        inventoryService = retrofit.create(InventoryService.class);
+        orderService = retrofit.create(OrderService.class);
     }
 
 
@@ -61,6 +69,55 @@ public class LinearListRepository {
         public void setMessage(@Nullable String message) {
             this.message = message;
         }
+    }
+
+
+    public void getOrderList(int userId, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {
+        orderService.getOrders(userId).enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if (response.isSuccessful()) {
+                    List<ProductLinearListModel> modelList = new ArrayList<>();
+                    for (Order order : response.body()) {
+                        ProductLinearListModel model = new ProductLinearListModel();
+                        model.setOrder(order);
+                        modelList.add(model);
+                    }
+                    callBack.onSuccess(new LinearListRepositoryResponse(modelList));
+                } else {
+                    callBack.onError(new LinearListRepositoryResponse("Error fetching the order list"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Order>> call, Throwable t) {
+                callBack.onError(new LinearListRepositoryResponse(t.getMessage()));
+            }
+        });
+    }
+
+    public void getSellerInventory(int userId, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {
+        inventoryService.getInventory(userId).enqueue(new Callback<List<Inventory>>() {
+            @Override
+            public void onResponse(Call<List<Inventory>> call, Response<List<Inventory>> response) {
+                if (response.isSuccessful()) {
+                    List<ProductLinearListModel> data = new ArrayList<>();
+                    for (Inventory inventory : response.body()) {
+                        ProductLinearListModel model = new ProductLinearListModel();
+                        model.setInventory(inventory);
+                        data.add(model);
+                    }
+                    callBack.onSuccess(new LinearListRepositoryResponse(data));
+                } else {
+                    callBack.onError(new LinearListRepositoryResponse("Error fetch seller inventory"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Inventory>> call, Throwable t) {
+                callBack.onError(new LinearListRepositoryResponse(t.getMessage()));
+            }
+        });
     }
 
     public void getUserWishList(int userId, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {

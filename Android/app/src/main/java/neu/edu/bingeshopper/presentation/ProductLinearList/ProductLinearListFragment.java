@@ -76,6 +76,17 @@ public class ProductLinearListFragment extends DaggerFragment {
             public void onProductClicked(Product product) {
                 NavigationUtil.navigate(ProductDetailFragment.newInstance(product), getFragmentManager().beginTransaction(), R.id.content_frame);
             }
+
+            @Override
+            public void onDeleteFromInventoryClicked(int inventoryId) {
+
+            }
+
+            @Override
+            public void onOrderClicked(int orderId) {
+                ProductLinearListFragment fragment = ProductLinearListFragment.newInstance(CurrentViewType.ORDER_TRANSACTION);
+                NavigationUtil.navigate(fragment, getFragmentManager().beginTransaction(), R.id.content_frame);
+            }
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -83,17 +94,71 @@ public class ProductLinearListFragment extends DaggerFragment {
         switch (currentViewType) {
 
             case WISH_LIST:
-                InitialiseWishListView();
+                initialiseWishListView();
                 break;
             case ORDER_HISTORY:
+                initialiseOrderHistory();
                 break;
             case INVENTORY_LIST:
+                initialiseInventoryView();
                 break;
         }
 
     }
 
-    private void InitialiseWishListView() {
+    private void initialiseOrderHistory() {
+        Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse> observer = new Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse>() {
+            @Override
+            public void onChanged(@Nullable ProductLinearListViewModel.ProductLinearListViewModelResponse productLinearListViewModelResponse) {
+                binding.progressBar.setVisibility(View.GONE);
+                switch (productLinearListViewModelResponse.getStatus()) {
+                    case Success:
+                        if (productLinearListViewModelResponse.getData().isEmpty()) {
+                            binding.emptyState.setVisibility(View.VISIBLE);
+                            binding.linearListRecyclerview.setVisibility(View.GONE);
+                            binding.emptyState.setText("No order history found");
+                        } else {
+                            binding.emptyState.setVisibility(View.GONE);
+                            binding.linearListRecyclerview.setVisibility(View.VISIBLE);
+                            adapter.setData(productLinearListViewModelResponse.getData());
+                        }
+                    case Error:
+                        Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+        viewModel.getResponseMutableLiveData().observe(this, observer);
+        viewModel.getOrderList(userManager.getUser().getId());
+    }
+
+    private void initialiseInventoryView() {
+        Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse> observer = new Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse>() {
+            @Override
+            public void onChanged(@Nullable ProductLinearListViewModel.ProductLinearListViewModelResponse productLinearListViewModelResponse) {
+                binding.progressBar.setVisibility(View.GONE);
+                switch (productLinearListViewModelResponse.getStatus()) {
+                    case Success:
+                        if (productLinearListViewModelResponse.getData().isEmpty()) {
+                            binding.emptyState.setVisibility(View.VISIBLE);
+                            binding.linearListRecyclerview.setVisibility(View.GONE);
+                            binding.emptyState.setText("No inventory found");
+                        } else {
+                            binding.emptyState.setVisibility(View.GONE);
+                            binding.linearListRecyclerview.setVisibility(View.VISIBLE);
+                            adapter.setData(productLinearListViewModelResponse.getData());
+                        }
+                    case Error:
+                        Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+        viewModel.getResponseMutableLiveData().observe(this, observer);
+        viewModel.getSellerInventory(userManager.getUser().getId());
+    }
+
+    private void initialiseWishListView() {
         Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse> observerWishList = new Observer<ProductLinearListViewModel.ProductLinearListViewModelResponse>() {
             @Override
             public void onChanged(@Nullable ProductLinearListViewModel.ProductLinearListViewModelResponse productLinearListViewModelResponse) {
@@ -114,7 +179,7 @@ public class ProductLinearListFragment extends DaggerFragment {
                         break;
 
                     case Error:
-                        Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), productLinearListViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -127,11 +192,16 @@ public class ProductLinearListFragment extends DaggerFragment {
     public enum CurrentViewType {
         WISH_LIST,
         ORDER_HISTORY,
+        ORDER_TRANSACTION,
         INVENTORY_LIST;
     }
 
     interface ProductLinearListFragmentCallBack {
         void onProductClicked(Product product);
+
+        void onDeleteFromInventoryClicked(int inventoryId);
+
+        void onOrderClicked(int orderId);
     }
 
 }
