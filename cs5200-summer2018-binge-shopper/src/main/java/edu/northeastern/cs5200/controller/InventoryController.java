@@ -42,7 +42,7 @@ public class InventoryController {
 
     @PostMapping("user/{userId}/update")
     public InventoryEntity updateProductInSellerInventory(@PathVariable int userId, @RequestBody InventoryEntity inventory, HttpSession session){
-        return inventoryService.updateInventory(userId, inventory);
+        return inventoryService.updateInventory(inventory);
     }
 
     @PostMapping("delete/{inventoryId}")

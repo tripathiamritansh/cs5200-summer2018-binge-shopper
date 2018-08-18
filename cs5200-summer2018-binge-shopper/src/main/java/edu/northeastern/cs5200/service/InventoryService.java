@@ -58,7 +58,7 @@ public class InventoryService {
         return inventoryRepository.findBySellerId(userId);
     }
 
-    public InventoryEntity updateInventory(int userId, InventoryEntity inventory){
+    public InventoryEntity updateInventory(InventoryEntity inventory){
         InventoryEntity inv = inventoryRepository.findById(inventory.getId());
         if(inv == null)
             throw new NotFoundException("Inventory not found for seller");
@@ -78,7 +78,7 @@ public class InventoryService {
         else{
             throw new NotFoundException("Action does not match add or delete products");
         }
-        return inv;
+        return inventoryRepository.save(inv);
     }
 
     public void deleteInventory(int inventoryId){
