@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/user")
@@ -60,9 +61,24 @@ public class UserController {
         return user;
     }
 
+    @GetMapping("getAll")
+    public List<UserEntity> getAllUsers(HttpSession session){
+        return userService.findAllUsers();
+    }
+
+    @PutMapping("{userId}/approve/{status}")
+    public UserEntity updateApproveUser(HttpSession session, int userId, boolean status){
+        return userService.updateApproveUser(userId, status);
+    }
+
     @PutMapping("update")
-    public UserEntity update(@RequestBody UserEntity user, HttpSession session) throws Exception {
+    public UserEntity update(@RequestBody UserEntity user, HttpSession session){
         return userService.updateUser(user);
+    }
+
+    @DeleteMapping("{userId}/delete")
+    public void deleteUser(HttpSession session, int userId){
+        userService.deleteUser(userId);
     }
 
     @DeleteMapping("logout")

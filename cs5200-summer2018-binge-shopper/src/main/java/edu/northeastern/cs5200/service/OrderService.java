@@ -1,6 +1,5 @@
 package edu.northeastern.cs5200.service;
 
-import edu.northeastern.cs5200.entity.InventoryEntity;
 import edu.northeastern.cs5200.entity.OrderEntity;
 import edu.northeastern.cs5200.entity.TransactionEntity;
 import edu.northeastern.cs5200.entity.UserEntity;
