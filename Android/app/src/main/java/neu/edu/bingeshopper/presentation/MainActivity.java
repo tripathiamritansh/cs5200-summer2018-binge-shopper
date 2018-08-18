@@ -26,6 +26,7 @@ import neu.edu.bingeshopper.Repository.Model.Cart;
 import neu.edu.bingeshopper.Repository.Model.UserType;
 import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListFragment;
+import neu.edu.bingeshopper.presentation.admin.AdminFragment;
 import neu.edu.bingeshopper.presentation.cart.CartFragment;
 import neu.edu.bingeshopper.presentation.home.HomeFragment;
 import neu.edu.bingeshopper.presentation.login.LoginFragment;
@@ -47,7 +48,6 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -57,8 +57,16 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        updateNavBar();
-        init();
+
+        if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.Admin) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.drawer_admin);
+            NavigationUtil.navigate(AdminFragment.newInstance(), getSupportFragmentManager().beginTransaction(), R.id.content_frame);
+        } else {
+            updateNavBar();
+            init();
+        }
+
     }
 
 
@@ -82,6 +90,10 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
+        if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.Admin) {
+            return true;
+        }
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -164,6 +176,12 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         } else if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.Seller) {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.drawer_view_seller_logout);
+        } else if (userManager.getUser() != null && userManager.getUser().getUserType() == UserType.Admin) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+
         } else {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.drawer_view_login);

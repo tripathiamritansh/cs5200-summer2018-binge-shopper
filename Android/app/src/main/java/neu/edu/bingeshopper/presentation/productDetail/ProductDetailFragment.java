@@ -114,7 +114,7 @@ public class ProductDetailFragment extends DaggerFragment {
                         }
                         break;
                     case Error:
-                        Toast.makeText(getContext(), productDetailsViewModelResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), productDetailsViewModelResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         break;
                 }
 

@@ -4,6 +4,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListFragment;
 import neu.edu.bingeshopper.presentation.SellerList.SellerListFragment;
+import neu.edu.bingeshopper.presentation.admin.AdminFragment;
 import neu.edu.bingeshopper.presentation.cart.CartFragment;
 import neu.edu.bingeshopper.presentation.login.LoginFragment;
 import neu.edu.bingeshopper.presentation.productDetail.ProductDetailFragment;
@@ -43,6 +44,9 @@ public abstract class FragmentBuilder {
 
     @ContributesAndroidInjector
     abstract ReviewsFragment provideReviewsFragment();
+
+    @ContributesAndroidInjector
+    abstract AdminFragment provideAdminFragment();
 
 
 }

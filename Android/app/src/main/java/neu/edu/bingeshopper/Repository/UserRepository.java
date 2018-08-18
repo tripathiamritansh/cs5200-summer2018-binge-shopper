@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -72,6 +74,45 @@ public class UserRepository extends Repository {
         }
     }
 
+
+    public class AdminResponse implements ResponseValue {
+
+
+        @Nullable
+        private String message;
+        private List<User> users;
+
+        public AdminResponse(String message, List<User> users) {
+            this.message = message;
+            this.users = users;
+        }
+
+        public AdminResponse(List<User> users) {
+            this.users = users;
+        }
+
+        public AdminResponse(String message) {
+            this.message = message;
+        }
+
+        @Nullable
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(@Nullable String message) {
+            this.message = message;
+        }
+
+        public List<User> getUsers() {
+            return users;
+        }
+
+        public void setUsers(List<User> users) {
+            this.users = users;
+        }
+    }
+
     public void login(String username, String passport, final RepositoryCallBack callBack) {
         setCallBack(callBack);
         userServices.login(username, passport).enqueue(new Callback<User>() {
@@ -128,6 +169,60 @@ public class UserRepository extends Repository {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 callBack.onError(new UserRepositoryResponse(t.getMessage()));
+            }
+        });
+    }
+
+    public void getAllUsers(final RepositoryCallBack<AdminResponse> callBack) {
+        userServices.getAllUsers().enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    callBack.onSuccess(new AdminResponse(response.body()));
+                } else {
+                    callBack.onError(new AdminResponse("Error fetching user list"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                callBack.onError(new AdminResponse(t.getMessage()));
+            }
+        });
+    }
+
+    public void deleteUser(int userId, final RepositoryCallBack<AdminResponse> callBack) {
+        userServices.deleteUser(userId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    getAllUsers(callBack);
+                } else {
+                    callBack.onError(new AdminResponse("Error deleting user"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBack.onError(new AdminResponse(t.getMessage()));
+            }
+        });
+    }
+
+    public void approveUser(int userId, boolean approve, final RepositoryCallBack<AdminResponse> callBack) {
+        userServices.approveUser(userId, approve).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    getAllUsers(callBack);
+                } else {
+                    callBack.onError(new AdminResponse("Error updating user"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                callBack.onError(new AdminResponse(t.getMessage()));
             }
         });
     }
