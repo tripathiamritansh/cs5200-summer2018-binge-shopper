@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("{userId}/approve/{status}")
-    public UserEntity updateApproveUser(HttpSession session, int userId, boolean status){
+    public UserEntity updateApproveUser(HttpSession session, @PathVariable int userId, @PathVariable boolean status){
         return userService.updateApproveUser(userId, status);
     }
 
@@ -77,7 +77,7 @@ public class UserController {
     }
 
     @DeleteMapping("{userId}/delete")
-    public void deleteUser(HttpSession session, int userId){
+    public void deleteUser(HttpSession session, @PathVariable int userId){
         userService.deleteUser(userId);
     }
 

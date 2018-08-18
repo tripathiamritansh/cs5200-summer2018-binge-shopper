@@ -15,7 +15,6 @@ public class TransactionEntity {
     @Column(name = "id")
     private int id;
     @Column(name = "date", nullable = false, updatable = false)
-    @UpdateTimestamp
     private Date date;
 
     @Column(name = "qty")
@@ -56,6 +55,7 @@ public class TransactionEntity {
         this.seller = seller;
         this.order = order;
         this.qty = qty;
+        this.date = new Date();
     }
 
     public int getId() {
@@ -68,10 +68,6 @@ public class TransactionEntity {
 
     public Date getDate() {
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public int getQty() {
