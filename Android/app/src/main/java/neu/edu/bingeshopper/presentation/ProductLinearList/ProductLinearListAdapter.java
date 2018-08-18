@@ -43,7 +43,7 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder;
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (currentViewType) {
             case WISH_LIST:
@@ -138,6 +138,12 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
             });
             Picasso.get().load(data.get(pos).getProduct().getImage_url()).into(binding.productImage);
             binding.productName.setText(data.get(pos).getProduct().getName());
+            binding.deleteWishList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callBack.onDeleteFromWishListClicked(data.get(pos).getBuyer().getId(), data.get(pos).getProduct());
+                }
+            });
             binding.executePendingBindings();
         }
     }
@@ -162,6 +168,13 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
                     callBack.onOrderClicked(order.getId());
                 }
             });
+
+            orderHistoryBinding.deleteOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callBack.onDeleteOrderClicked(order.getId(), order.getBuyer().getId());
+                }
+            });
             orderHistoryBinding.executePendingBindings();
         }
     }
@@ -175,13 +188,13 @@ public class ProductLinearListAdapter extends RecyclerView.Adapter {
             this.binding = binding;
         }
 
-        void bind(int pos) {
+        void bind(final int pos) {
             Picasso.get().load(data.get(pos).getInventory().getProduct().getImage_url()).into(binding.productImage);
             binding.productName.setText(data.get(pos).getInventory().getProduct().getName());
             binding.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    callBack.onDeleteFromInventoryClicked(data.get(pos).getInventory().getId(), data.get(pos).getInventory().getSeller().getId());
                 }
             });
             binding.productPrice.setText("$" + data.get(pos).getInventory().getPrice());

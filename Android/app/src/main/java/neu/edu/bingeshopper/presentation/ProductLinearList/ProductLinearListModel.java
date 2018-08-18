@@ -9,6 +9,7 @@ import neu.edu.bingeshopper.Repository.Model.User;
 public class ProductLinearListModel {
     private Product product;
     private User seller;
+    private User buyer;
     private int qty;
     private int price;
     private Order order;
@@ -24,6 +25,14 @@ public class ProductLinearListModel {
 
 
     public ProductLinearListModel() {
+    }
+
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
     }
 
     public Transaction getTransaction() {

@@ -32,7 +32,9 @@ public class ProductLinearListFragment extends DaggerFragment {
 
     private static String VIEW_TYPE = "ViewType";
     private static String ORDER_ID = "orderId";
+    private static String User_Id = "User_Id";
     private CurrentViewType currentViewType;
+    private int userId;
     private FragmentLinearListBinding binding;
     private RecyclerView recyclerView;
     private ProductLinearListViewModel viewModel;
@@ -66,13 +68,24 @@ public class ProductLinearListFragment extends DaggerFragment {
 
     }
 
+    public static ProductLinearListFragment newInstance(int userId, CurrentViewType viewType) {
+
+        Bundle args = new Bundle();
+        args.putSerializable(VIEW_TYPE, viewType);
+        args.putInt(User_Id, userId);
+        ProductLinearListFragment fragment = new ProductLinearListFragment();
+        fragment.setArguments(args);
+        return fragment;
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             currentViewType = (CurrentViewType) getArguments().getSerializable(VIEW_TYPE);
-            orderId = getArguments().getInt(ORDER_ID);
+            orderId = getArguments().getInt(ORDER_ID, -1);
+            userId = getArguments().getInt(User_Id, -1);
         }
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductLinearListViewModel.class);
 
@@ -96,8 +109,9 @@ public class ProductLinearListFragment extends DaggerFragment {
             }
 
             @Override
-            public void onDeleteFromInventoryClicked(int inventoryId) {
-
+            public void onDeleteFromInventoryClicked(int inventoryId, int sellerId) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                viewModel.deleteFromInventory(sellerId, inventoryId);
             }
 
             @Override
@@ -114,6 +128,18 @@ public class ProductLinearListFragment extends DaggerFragment {
             @Override
             public void OnWriteProductReviewClicked(Product product) {
                 navigateToProductDialog(product);
+            }
+
+            @Override
+            public void onDeleteFromWishListClicked(int userId, Product product) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                viewModel.deleteFromWishList(userId, product);
+            }
+
+            @Override
+            public void onDeleteOrderClicked(int orderId, int userId) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                viewModel.deleteOrder(userId, orderId);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -254,7 +280,12 @@ public class ProductLinearListFragment extends DaggerFragment {
             }
         };
         viewModel.getResponseMutableLiveData().observe(this, observer);
-        viewModel.getSellerInventory(userManager.getUser().getId());
+        if (userId == -1) {
+            viewModel.getSellerInventory(userManager.getUser().getId());
+
+        } else {
+            viewModel.getSellerInventory(userId);
+        }
     }
 
     private void initialiseWishListView() {
@@ -298,13 +329,17 @@ public class ProductLinearListFragment extends DaggerFragment {
     interface ProductLinearListFragmentCallBack {
         void onProductClicked(Product product);
 
-        void onDeleteFromInventoryClicked(int inventoryId);
+        void onDeleteFromInventoryClicked(int inventoryId, int sellerId);
 
         void onOrderClicked(int orderId);
 
         void OnWriteSellerReviewClicked(User seller);
 
         void OnWriteProductReviewClicked(Product product);
+
+        void onDeleteFromWishListClicked(int userId, Product product);
+
+        void onDeleteOrderClicked(int orderId, int userId);
     }
 
 }

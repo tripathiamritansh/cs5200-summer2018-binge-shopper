@@ -6,6 +6,7 @@ import neu.edu.bingeshopper.Repository.Model.Order;
 import neu.edu.bingeshopper.Repository.Model.OrderTransactionWrapper;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -17,4 +18,7 @@ public interface OrderService {
 
     @GET("api/order/user/{userId}/getOrder")
     Call<List<Order>> getOrders(@Path("userId") int userId);
+
+    @DELETE("api/order/{orderId}/deleteOrder")
+    Call<Void> deleteOrder(@Path("orderId") int orderId);
 }

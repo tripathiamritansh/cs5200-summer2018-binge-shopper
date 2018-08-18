@@ -83,7 +83,7 @@ public class ProfileFragment extends DaggerFragment {
                 binding.loginProgress.setVisibility(View.VISIBLE);
                 String email = binding.email.getText().toString();
                 String firstName = binding.firstname.getText().toString();
-                String lastName = binding.firstname.getText().toString();
+                String lastName = binding.lastname.getText().toString();
                 String userName = binding.username.getText().toString();
                 String password = binding.password.getText().toString();
 

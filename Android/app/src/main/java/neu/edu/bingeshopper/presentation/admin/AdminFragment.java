@@ -18,7 +18,9 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.User;
+import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.databinding.FragmentAdminBinding;
+import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListFragment;
 import neu.edu.bingeshopper.presentation.ViewModelFactory;
 
 public class AdminFragment extends DaggerFragment {
@@ -70,9 +72,10 @@ public class AdminFragment extends DaggerFragment {
 
             @Override
             public void onUserClicked(User user) {
-                switch (user.getUserType()){
-                    case Buyer:
-
+                switch (user.getUserType()) {
+                    case Seller:
+                        NavigationUtil.navigate(ProductLinearListFragment.newInstance(user.getId(), ProductLinearListFragment.CurrentViewType.INVENTORY_LIST), getFragmentManager().beginTransaction(), R.id.content_frame);
+                        break;
 
                 }
             }

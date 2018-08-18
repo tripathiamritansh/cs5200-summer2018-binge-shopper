@@ -6,7 +6,9 @@ import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.WishList;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -17,4 +19,7 @@ public interface WishListService {
 
     @POST("api/wishlist/user/{userId}/add")
     Call<Void> addToWishList(@Path("userId") int userId, @Body Product product);
+
+    @HTTP(method = "DELETE", path = "api/wishlist/user/{userId}/deleteProducts", hasBody = true)
+    Call<Void> deleteProductFromWishList(@Path("userId") int userId, @Body Product product);
 }

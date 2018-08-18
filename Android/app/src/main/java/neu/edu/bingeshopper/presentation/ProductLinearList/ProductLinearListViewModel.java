@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import neu.edu.bingeshopper.Repository.LinearListRepository;
+import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.Repository;
 import neu.edu.bingeshopper.Repository.ReviewRepository;
 
@@ -151,6 +152,48 @@ public class ProductLinearListViewModel extends ViewModel {
             @Override
             public void onError(String response) {
                 responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response));
+            }
+        });
+    }
+
+    public void deleteFromInventory(int sellerId, int inventoryId) {
+        repository.deleteFromInventory(inventoryId, sellerId, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
+            @Override
+            public void onSuccess(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response.getData()));
+            }
+
+            @Override
+            public void onError(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response.getMessage()));
+            }
+        });
+    }
+
+    public void deleteFromWishList(int userId, Product product) {
+        repository.deleteFromWishList(userId, product, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
+            @Override
+            public void onSuccess(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response.getData()));
+            }
+
+            @Override
+            public void onError(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response.getMessage()));
+            }
+        });
+    }
+
+    public void deleteOrder(int userId, int orderID) {
+        repository.deleteOrder(orderID, userId, new Repository.RepositoryCallBack<LinearListRepository.LinearListRepositoryResponse>() {
+            @Override
+            public void onSuccess(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Success, response.getData()));
+            }
+
+            @Override
+            public void onError(LinearListRepository.LinearListRepositoryResponse response) {
+                responseMutableLiveData.setValue(new ProductLinearListViewModelResponse(Status.Error, response.getMessage()));
             }
         });
     }

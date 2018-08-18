@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import neu.edu.bingeshopper.Repository.Model.Inventory;
 import neu.edu.bingeshopper.Repository.Model.Order;
+import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.Repository;
 import neu.edu.bingeshopper.Repository.Model.Transaction;
 import neu.edu.bingeshopper.Repository.Model.WishList;
@@ -159,6 +160,7 @@ public class LinearListRepository {
                     for (WishList wishList : response.body()) {
                         ProductLinearListModel model = new ProductLinearListModel();
                         model.setProduct(wishList.getProduct());
+                        model.setBuyer(wishList.getUser());
                         linearListModel.add(model);
                     }
                     callBack.onSuccess(new LinearListRepositoryResponse(linearListModel));
@@ -173,6 +175,61 @@ public class LinearListRepository {
 
             }
 
+        });
+    }
+
+    public void deleteFromInventory(int inventoryId, final int sellerId, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {
+        inventoryService.deleteInventory(inventoryId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    getSellerInventory(sellerId, callBack);
+                } else {
+                    callBack.onError(new LinearListRepositoryResponse("Error deleting from inventory"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBack.onError(new LinearListRepositoryResponse(t.getMessage()));
+            }
+        });
+    }
+
+    public void deleteFromWishList(final int userId, Product product, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {
+        wishListService.deleteProductFromWishList(userId, product).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    getUserWishList(userId, callBack);
+                } else {
+                    callBack.onError(new LinearListRepositoryResponse("Error deleting from wishlist"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBack.onError(new LinearListRepositoryResponse(t.getMessage()));
+            }
+        });
+    }
+
+    public void deleteOrder(int orderId, final int userId, final Repository.RepositoryCallBack<LinearListRepositoryResponse> callBack) {
+        orderService.deleteOrder(orderId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    getOrderList(userId, callBack);
+                } else {
+                    callBack.onError(new LinearListRepositoryResponse("Error deleting from order"));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callBack.onError(new LinearListRepositoryResponse(t.getMessage()));
+            }
         });
     }
 }
