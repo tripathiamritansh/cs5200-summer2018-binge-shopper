@@ -73,6 +73,7 @@ public class CartFragment extends DaggerFragment {
         Observer<CartViewModel.CartViewModelResponse> observer = new Observer<CartViewModel.CartViewModelResponse>() {
             @Override
             public void onChanged(@Nullable CartViewModel.CartViewModelResponse cartViewModelResponse) {
+                binding.progressBar2.setVisibility(View.GONE);
                 Toast.makeText(getContext(), cartViewModelResponse.getMessage(), Toast.LENGTH_LONG).show();
                 switch (cartViewModelResponse.getStatus()) {
                     case Success:
@@ -121,8 +122,9 @@ public class CartFragment extends DaggerFragment {
             binding.placeOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    binding.progressBar2.setVisibility(View.VISIBLE);
                     binding.group.setVisibility(View.GONE);
-//                    binding.
+
                     viewModel.placeOrder(userManager.getUser().getId(), cart.getCartItems());
                 }
             });
