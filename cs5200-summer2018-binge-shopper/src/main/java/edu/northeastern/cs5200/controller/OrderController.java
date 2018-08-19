@@ -31,7 +31,7 @@ public class OrderController {
         return orderService.updateOrderForBuyer(orderId, transactions);
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("{orderId}/deleteOrder")
     public void deleteOrder(@PathVariable int orderId){
         orderService.deleteOrder(orderId);
     }
