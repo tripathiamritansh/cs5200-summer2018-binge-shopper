@@ -1,5 +1,6 @@
 package neu.edu.bingeshopper.presentation.admin;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +78,10 @@ public class AdminFragment extends DaggerFragment {
                     case Seller:
                         NavigationUtil.navigate(ProductLinearListFragment.newInstance(user.getId(), ProductLinearListFragment.CurrentViewType.INVENTORY_LIST), getFragmentManager().beginTransaction(), R.id.content_frame);
                         break;
-
+                    case Buyer:
+//                        NavigationUtil.navigate(ProductLinearListFragment.newInstance);
+                        navigateToOptionsDialog(user.getId());
+                        break;
                 }
             }
         });
@@ -107,6 +112,34 @@ public class AdminFragment extends DaggerFragment {
         };
         viewModel.getResponseMutableLiveData().observe(this, observer);
         viewModel.getAllUsers();
+    }
+
+    private void navigateToOptionsDialog(final int buyerId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(R.layout.fragment_admin_options);
+        final AlertDialog dailog = builder.create();
+
+        dailog.show();
+        dailog.findViewById(R.id.wishlist_option).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ShareDialog", "ButtonClicked");
+
+                NavigationUtil.navigate(ProductLinearListFragment.newInstance(buyerId, ProductLinearListFragment.CurrentViewType.WISH_LIST), getFragmentManager().beginTransaction(), R.id.content_frame);
+                dailog.dismiss();
+            }
+        });
+
+        dailog.findViewById(R.id.order_option).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ShareDialog", "ButtonClicked");
+                NavigationUtil.navigate(ProductLinearListFragment.newInstance(buyerId, ProductLinearListFragment.CurrentViewType.ORDER_HISTORY), getFragmentManager().beginTransaction(), R.id.content_frame);
+                dailog.dismiss();
+            }
+        });
+
+
     }
 
     interface AdminCallBack {

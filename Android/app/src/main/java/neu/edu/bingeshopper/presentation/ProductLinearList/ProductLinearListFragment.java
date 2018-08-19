@@ -253,7 +253,12 @@ public class ProductLinearListFragment extends DaggerFragment {
             }
         };
         viewModel.getResponseMutableLiveData().observe(this, observer);
-        viewModel.getOrderList(userManager.getUser().getId());
+        if (userId == -1) {
+            viewModel.getOrderList(userManager.getUser().getId());
+        } else {
+            viewModel.getOrderList(userId);
+        }
+
     }
 
     private void initialiseInventoryView() {
@@ -316,7 +321,12 @@ public class ProductLinearListFragment extends DaggerFragment {
         };
 
         viewModel.getResponseMutableLiveData().observe(this, observerWishList);
-        viewModel.getWishList(userManager.getUser().getId());
+        if (userId == -1) {
+            viewModel.getWishList(userManager.getUser().getId());
+        } else {
+            viewModel.getWishList(userId);
+        }
+
     }
 
     public enum CurrentViewType {
