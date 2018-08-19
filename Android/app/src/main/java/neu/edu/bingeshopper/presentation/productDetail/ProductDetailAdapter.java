@@ -20,6 +20,7 @@ import neu.edu.bingeshopper.Repository.Model.AdapterItem;
 import neu.edu.bingeshopper.Repository.Model.Product;
 import neu.edu.bingeshopper.Repository.Model.ProductReview;
 import neu.edu.bingeshopper.Repository.Model.UserType;
+import neu.edu.bingeshopper.common.IOUtils;
 import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.common.UserManager;
 import neu.edu.bingeshopper.databinding.ItemProductDetailBinding;
@@ -113,6 +114,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter {
                 binding.addToInventoryButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        IOUtils.hideSoftKeyboard(v.getContext(), v);
                         String qty = binding.quantityEdittext.getText().toString();
                         String price = binding.priceEdittext.getText().toString();
                         if (qty.equals("") && price.equals("")) {
@@ -136,6 +138,7 @@ public class ProductDetailAdapter extends RecyclerView.Adapter {
                 binding.chooseSellerButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        IOUtils.hideSoftKeyboard(v.getContext(), v);
                         SellerListFragment fragment = SellerListFragment.newInstance(product.getId(), Integer.valueOf(binding.quantityEdittext.getText().toString()));
                         NavigationUtil.navigate(fragment, fragmentManager.beginTransaction(), R.id.content_frame);
                     }

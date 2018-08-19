@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import neu.edu.bingeshopper.R;
+import neu.edu.bingeshopper.common.IOUtils;
 import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.common.UserManager;
 import neu.edu.bingeshopper.databinding.FragmentLoginBinding;
@@ -82,6 +83,7 @@ public class LoginFragment extends DaggerFragment {
             @Override
             public void onClick(View v) {
                 binding.loginProgress.setVisibility(View.VISIBLE);
+                IOUtils.hideSoftKeyboard(getActivity());
                 viewModel.loginUser(binding.username.getText().toString(), binding.password.getText().toString());
             }
         });

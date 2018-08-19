@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.User;
+import neu.edu.bingeshopper.common.IOUtils;
 import neu.edu.bingeshopper.common.UserManager;
 import neu.edu.bingeshopper.databinding.FragmentSignupBinding;
 import neu.edu.bingeshopper.presentation.ViewModelFactory;
@@ -80,6 +81,7 @@ public class ProfileFragment extends DaggerFragment {
         binding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                IOUtils.hideSoftKeyboard(getActivity());
                 binding.loginProgress.setVisibility(View.VISIBLE);
                 String email = binding.email.getText().toString();
                 String firstName = binding.firstname.getText().toString();

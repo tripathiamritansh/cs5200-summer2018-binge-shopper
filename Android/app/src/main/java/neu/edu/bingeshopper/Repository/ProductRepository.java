@@ -65,7 +65,7 @@ public class ProductRepository extends Repository {
         walmartService.searchProducts(query, sort).enqueue(new Callback<WalmartResponse>() {
             @Override
             public void onResponse(Call<WalmartResponse> call, Response<WalmartResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null && response.body().getItems() != null) {
                     List<Product> products = new ArrayList<>();
                     for (Item item : response.body().getItems()) {
                         String name = item.getName();
@@ -79,7 +79,8 @@ public class ProductRepository extends Repository {
                                         imageUrl = imageEntity.getLargeImage();
                                     } else {
                                         imageUrl = imageEntity.getMediumImage();
-                                    }                                }
+                                    }
+                                }
                             }
 
 

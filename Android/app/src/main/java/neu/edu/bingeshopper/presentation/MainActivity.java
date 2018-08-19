@@ -24,6 +24,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.Cart;
 import neu.edu.bingeshopper.Repository.Model.UserType;
+import neu.edu.bingeshopper.common.IOUtils;
 import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.presentation.ProductLinearList.ProductLinearListFragment;
 import neu.edu.bingeshopper.presentation.admin.AdminFragment;
@@ -103,6 +104,7 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                IOUtils.hideSoftKeyboard(getParent());
                 ProductListFragment fragment = ProductListFragment.newInstance(query, "relevance");
                 NavigationUtil.navigate(fragment, getSupportFragmentManager().beginTransaction(), R.id.content_frame);
                 return false;

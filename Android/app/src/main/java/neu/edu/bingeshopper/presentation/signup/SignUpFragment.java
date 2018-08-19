@@ -23,6 +23,7 @@ import dagger.android.support.DaggerFragment;
 import neu.edu.bingeshopper.R;
 import neu.edu.bingeshopper.Repository.Model.User;
 import neu.edu.bingeshopper.Repository.Model.UserType;
+import neu.edu.bingeshopper.common.IOUtils;
 import neu.edu.bingeshopper.common.NavigationUtil;
 import neu.edu.bingeshopper.databinding.FragmentSignupBinding;
 import neu.edu.bingeshopper.presentation.MainActivity;
@@ -87,6 +88,7 @@ public class SignUpFragment extends DaggerFragment implements AdapterView.OnItem
         binding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                IOUtils.hideSoftKeyboard(getActivity());
                 if (validateInput()) {
                     User user = new User(binding.firstname.getText().toString(), binding.lastname.getText().toString(),
                             binding.username.getText().toString(), binding.password.getText().toString(), binding.email.getText().toString(), usertype);

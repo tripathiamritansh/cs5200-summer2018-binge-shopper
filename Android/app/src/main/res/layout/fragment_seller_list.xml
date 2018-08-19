@@ -4,7 +4,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
 
         <ProgressBar
@@ -22,8 +23,9 @@
         <TextView
             android:id="@+id/seller_list_empty_state"
             android:layout_width="match_parent"
+            android:layout_margin="16dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/sorry_no_seller_found_with_requested_quantity_please_change_the_quantity_or_choose_another_product"
             android:visibility="gone" />
 
