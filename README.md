@@ -1,4 +1,8 @@
-![Alt text](image1.png "Optional Title") ![Alt text](image2.png "Optional Title")
+
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![Alt text](image1.png "Optional Title")  |  ![Alt text](image2.png "Optional Title")
+
 ### Description
 Binge Shopper is an android based application that connect sellers to large number of buyers and provide buyers with large number of products to choose from.The application enable sellers to list their products on an online platform through a dashboard.The buyer can search through a range of products available online listed by various seller. If a buyer likes a product, they can either add it into their wish list or can buy that product.
 
